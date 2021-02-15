@@ -1,6 +1,6 @@
 # MCT-Booking-App
 
-Deliverable 2: This deliverable consists of a temporary landing page for the booking portal of the MCT Booking App. It displays the MCT logo, a placeholder section for details about MCT, and a button to the patient's booking portal.
+The code for Deliverable 2 consists of a temporary landing page for the booking portal of the MCT Booking App. It displays the MCT logo, a placeholder section for details about MCT, and a button to the patient's booking portal.
 
 Import this repository into Eclipse. This project provides everything needed to:
 
