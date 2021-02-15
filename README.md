@@ -6,4 +6,4 @@ Import this repository into Eclipse. This project provides everything needed to:
 
 Host the web application on a local web server, such as Apache Tomcat.
 
-In the project outline of Eclipse, right-click "run.launch" -> Run As -> "run". It will be hosted on https://localhost:8080.
+In the project outline of Eclipse, right-click "run.launch" -> Run As -> "run". It will be hosted on http://localhost:8080.
