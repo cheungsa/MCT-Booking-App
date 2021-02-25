@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/patientform.css">
+  <script src="js/patientform.js" charset="utf-8"></script>
+  <title>MCT Booking Portal</title>
+</head>
+<body>
+  <nav id="top-nav-bar" class="navbar navbar-light bg-white">
+    <a class="navbar-brand" href="#">
+      <img src="images/logo.jpg" width="12%" height="12%">
+    </a>
+  </nav>
+
+  <div id="patient-container">
+    <h2>Schedule Appointment</h2>
+
+    <div id="patient-form-container">
+      <div id="parent-child-container">
+        <p>Who is booking the appointment?</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="exampleRadios" id="parentRadio" onclick="javascript:parentChildCheck();" value="parent">
+          <label class="form-check-label" for="parentRadio">
+            I am a parent or guardian.
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="exampleRadios" id="childRadio" onclick="javascript:parentChildCheck();" value="child">
+          <label class="form-check-label" for="childRadio">
+            I am the child.
+          </label>
+        </div>
+      </div>
+
+      <div id="child-container" style="display:blocked">
+        <h3>Child Form</h3>
+        <div class="form-row">
+          <div class="form-group col-md-6" style="padding-right:2%;">
+            <div class="input-field">
+              <label for="inputFirstName">First Name</label>
+              <input type="text" class="form-control" id="inputFirstName" placeholder="First name">
+            </div>
+
+            <div class="input-field">
+              <label for="inputLastName">Last Name</label>
+              <input type="text" class="form-control" id="inputLastName" placeholder="Last name">
+            </div>
+
+            <div class="input-field">
+              <label for="inputDateOfBirth">Date of Birth</label>
+              <input type="date" class="form-control" id="inputDateOfBirth">
+            </div>
+
+            <div class="input-field" id="gender-container">
+              <p>Gender</p>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="femaleRadio" onclick="javascript:genderCheck();" value="female">
+                <label class="form-check-label" for="femaleRadio">
+                  Yes
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="maleRadio" onclick="javascript:genderCheck();" value="male">
+                <label class="form-check-label" for="maleRadio">
+                  No
+                </label>
+              </div>
+            </div>
+
+            <div class="input-field">
+              <label for="inputPreferredLanguage">Preferred Language</label>
+              <select id="inputPreferredLanguage" class="form-control" required=true>
+                <option selected>Select one</option>
+                <option>English</option>
+                <option>Spanish</option>
+              </select>
+            </div>
+
+            <div class="input-field">
+              <label for="inputEthnicity">Ethnicity</label>
+              <select id="inputEthnicity" class="form-control">
+                <option selected>Select one</option>
+                <option>American Indian or Alaska Native</option>
+                <option>Asian</option>
+                <option>Black or African American</option>
+                <option>Hispanic or Latino</option>
+                <option>Native Hawaiian or Other Pacific Islander</option>
+                <option>White</option>
+              </select>
+            </div>
+
+            <div class="input-field">
+              <div class="input-physical-address">
+                <label for="inputPhysicalAddress">Physical Address</label>
+                <input type="text" class="form-control" id="inputPhysicalAddress" placeholder="Physical address">
+              </div>
+            </div>
+
+            <div class="input-field">
+              <div class="input-mailing-address">
+                <label for="inputMailingAddress">Mailing Address</label>
+                <input type="text" class="form-control" id="inputMailingAddress" placeholder="Mailing address">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-group col-md-6" style="padding-left:2%;">
+            <div class="input-field">
+              <label for="inputInsuranceType">Insurance Type</label>
+              <select id="inputInsuranceType" class="form-control" required=true>
+                <option selected>Select one</option>
+                <option>Medi-Cal</option>
+                <option>Medicaid</option>
+              </select>
+            </div>
+
+            <div class="input-field">
+              <label for="inputInsuranceNumber">Insurance Number</label>
+              <input type="text" class="form-control" id="inputInsuranceNumber" placeholder="Insurance number">
+            </div>
+
+            <div class="input-field">
+              <label for="inputConservatorship">Conservatorship</label>
+              <input type="text" class="form-control" id="inputConservatorship" placeholder="Conservatorship">
+            </div>
+
+            <div class="input-field">
+              <label for="inputAdminNecessity">Admin Necessity</label>
+              <input type="text" class="form-control" id="inputAdminNecessity" placeholder="Admin necessity">
+            </div>
+
+            <div class="input-code">
+              <label for="inputCode">Code</label>
+              <input type="text" class="form-control" id="inputCode" placeholder="Code">
+            </div>
+
+            <div class="input-field">
+              <label for="inputLegalClass">Legal Class</label>
+              <input type="text" class="form-control" id="inputLegalClass" placeholder="Legal class">
+            </div>
+
+            <div class="input-field">
+              <label for="inputAllergies">Allergies</label>
+              <input type="text" class="form-control" id="inputAllergies" placeholder="List allergies">
+            </div>
+
+            <div class="input-field">
+              <label for="inputReaction">Reaction</label>
+              <input type="text" class="form-control" id="inputReaction" placeholder="List allergic reactions">
+            </div>
+
+            <div class="input-field">
+              <label for="inputStartDate">Start Date</label>
+              <input type="date" class="form-control" id="inputStartDate">
+            </div>
+          </div>
+        </div>
+
+      <div id="parent-container" style="display:block">
+        <h3>Parent Form</h3>
+        <form>
+          <div class="form-row">
+            <div class="form-group col-md-6" style="padding-right:2%;">
+              <div class="input-field">
+                <label for="inputFirstName">First Name</label>
+                <input type="text" class="form-control" id="inputFirstName" placeholder="First name">
+              </div>
+
+              <div class="input-field">
+                <label for="inputLastName">Last Name</label>
+                <input type="text" class="form-control" id="inputLastName" placeholder="Last name">
+              </div>
+
+              <div class="input-field">
+                <label for="inputRelationship">Relationship to Child</label>
+                <select id="inputRelationship" class="form-control" required=true>
+                  <option selected>Select one</option>
+                  <option>Father</option>
+                  <option>Mother</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="input-field">
+                <label for="inputRelationshipOther">If you chose Other for your relationship, please explain:</label>
+                <input type="text" class="form-control" id="inputRelationshipOther">
+              </div>
+
+              <div class="input-field">
+                <label for="inputPhone">Emergency Contact Number</label>
+                <input type="tel" class="form-control" id="inputPhone" placeholder="Phone number">
+              </div>
+
+              <div class="input-field">
+                <label for="inputEmail">Email Address</label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email address">
+              </div>
+
+              <div class="input-field">
+                <label for="inputBirthCounty">County of Birth</label>
+                <input type="text" class="form-control" id="inputBirthCounty" placeholder="County">
+              </div>
+
+              <div class="input-field">
+                <label for="inputBirthState">State of Birth</label>
+                <input type="text" class="form-control" id="inputBirthState" placeholder="State">
+              </div>
+
+              <div class="input-field">
+                <p>Would you like to be included on our mailing list to receive our newsletter and information on events?</p>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="yesTrainingRadio" onclick="javascript:freeTrainingCheck();" value="yes">
+                  <label class="form-check-label" for="yesTrainingRadio">
+                    Yes
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="noTrainingRadio" onclick="javascript:freeTrainingCheck();" value="no">
+                  <label class="form-check-label" for="noTrainingRadio">
+                    No
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6" style="padding-left:2%;">
+              <div class="input-field">
+                <label for="inputSchoolAttended">School Attended</label>
+                <input type="text" class="form-control" id="inputSchoolAttended" placeholder="School">
+              </div>
+
+              <div class="input-field">
+                <label for="inputEducationLevel">Education Level (last completed grade)</label>
+                <input type="text" class="form-control" id="inputEducationLevel" placeholder="Education">
+              </div>
+
+              <div class="input-field">
+                <label for="inputEmploymentStatus">Employment Status</label>
+                <select id="inputEmploymentStatus" class="form-control" required=true>
+                  <option selected>Select one</option>
+                  <option>Employed</option>
+                  <option>Self-employed</option>
+                  <option>Unemployed</option>
+                </select>
+              </div>
+
+              <div class="input-field">
+                <label for="inputMaritalStatus">Marital Status</label>
+                <select id="inputMaritalStatus" class="form-control" required=true>
+                  <option selected>Select one</option>
+                  <option>Single</option>
+                  <option>Married</option>
+                  <option>Divorced</option>
+                  <option>Separated</option>
+                  <option>Never Married</option>
+                </select>
+              </div>
+
+              <div class="input-field">
+                <label for="inputLivingArrangement">Living Arrangement</label>
+                <input type="text" class="form-control" id="inputLivingArrangement" placeholder="Living arrangement">
+              </div>
+
+              <div class="input-field">
+                <label for="inputDependentsOver18">Dependents Over 18</label>
+                <input type="number" class="form-control" id="inputDependentsOver18" placeholder="Number of dependents over 18">
+              </div>
+
+              <div class="input-field">
+                <label for="inputDependentsUnder18">Dependents Under 18</label>
+                <input type="number" class="form-control" id="inputDependentsUnder18" placeholder="Number of dependents under 18">
+              </div>
+
+              <div class="input-field">
+                <p>Do you have any children in your family under 6?</p>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="yesRadio" onclick="javascript:childUnder6Check();" value="yes">
+                  <label class="form-check-label" for="yesRadio">
+                    Yes
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="noRadio" onclick="javascript:childUnder6Check();" value="no">
+                  <label class="form-check-label" for="noRadio">
+                    No
+                  </label>
+                </div>
+              </div>
+
+              <div class="input-field">
+                <p>If yes, would you be interested in having one of our parenting experts reach out to you about some free training?</p>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="yesTrainingRadio" onclick="javascript:freeTrainingCheck();" value="yes">
+                  <label class="form-check-label" for="yesTrainingRadio">
+                    Yes
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="noTrainingRadio" onclick="javascript:freeTrainingCheck();" value="no">
+                  <label class="form-check-label" for="noTrainingRadio">
+                    No
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheck">
+              <label class="form-check-label" for="gridAddChild">
+                Add a child
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary mx-auto d-block" id="btn-next">Next</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
