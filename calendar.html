@@ -1,0 +1,133 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>MCT Booking App</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--====== Local CSS and JS ======-->
+    <link rel="stylesheet" href="css/calendar.css">
+
+</head>
+
+<body>
+
+  <!--====== SCRIPTS ======-->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.2/angular.min.js'></script>
+  <script src="js/calendar.js"></script>
+
+  <div class="app-container" ng-app="dateTimeApp" ng-controller="dateTimeCtrl as ctrl" ng-cloak>
+
+  	<div date-picker
+  		 datepicker-title="Select Date"
+  		 picktime="true"
+  		 pickdate="true"
+  		 pickpast="false"
+  		 mondayfirst="false"
+  		 custom-message="You have selected"
+  		 selecteddate="ctrl.selected_date"
+  		 updatefn="ctrl.updateDate(newdate)">
+
+  		<div class="datepicker"
+  			 ng-class="{
+  				'am': timeframe == 'am',
+  				'pm': timeframe == 'pm',
+  				'compact': compact
+  			}">
+  			<div class="datepicker-header">
+  				<div class="datepicker-title" ng-if="datepicker_title">{{ datepickerTitle }}</div>
+  				<div class="datepicker-subheader">{{ customMessage }} {{ selectedDay }} {{ monthNames[localdate.getMonth()] }} {{ localdate.getDate() }}, {{ localdate.getFullYear() }}</div>
+  			</div>
+  			<div class="datepicker-calendar">
+  				<div class="calendar-header">
+  					<div class="goback" ng-click="moveBack()" ng-if="pickdate">
+  						<svg width="30" height="30">
+  							<path fill="none" stroke="#154675" stroke-width="3" d="M19,6 l-9,9 l9,9"/>
+  						</svg>
+  					</div>
+  					<div class="current-month-container">{{ currentMonthName() }} {{ currentViewDate.getFullYear() }}</div>
+  					<div class="goforward" ng-click="moveForward()" ng-if="pickdate">
+  						<svg width="30" height="30">
+  							<path fill="none" stroke="#154675" stroke-width="3" d="M11,6 l9,9 l-9,9" />
+  						</svg>
+  					</div>
+  				</div>
+  				<div class="calendar-day-header">
+  					<span ng-repeat="day in days" class="day-label">{{ day.short }}</span>
+  				</div>
+  				<div class="calendar-grid" ng-class="{false: 'no-hover'}[pickdate]">
+  					<div
+  						ng-class="{'no-hover': !day.showday}"
+  						ng-repeat="day in month"
+  						class="datecontainer"
+  						ng-style="{'margin-left': calcOffset(day, $index)}"
+  						track by $index>
+  						<div class="datenumber" ng-class="{'day-selected': day.selected }" ng-click="selectDate(day)">
+  							{{ day.daydate }}
+  						</div>
+  					</div>
+  				</div>
+  			</div>
+  			<div class="timepicker" ng-if="picktime == 'true'">
+          <div class="available-times-containter">
+            <div class="available-times">
+              <div class="times">
+                9:00AM
+              </div>
+            </div>
+            <div class="available-times">
+              <div class="times">
+                10:00AM
+              </div>
+            </div>
+            <div class="available-times">
+              <div class="times">
+                11:00AM
+              </div>
+            </div>
+            <div class="available-times">
+              <div class="times">
+                12:00PM
+              </div>
+            </div>
+            <div class="available-times">
+              <div class="times">
+                1:00PM
+              </div>
+            </div>
+            <div class="available-times">
+              <div class="times">
+                2:00PM
+              </div>
+            </div>
+            <div class="available-times">
+              <div class="times">
+                3:00PM
+              </div>
+            </div>
+            <div class="available-times">
+              <div class="times">
+                4:00PM
+              </div>
+            </div>
+          </div>
+  							<div class="timeline-container" ng-mousedown="timeSelectStart($event)" sm-touchstart="timeSelectStart($event)">
+  								<div class="timeline"></div>
+  						 </div>
+
+  			  <div class="buttons-container">
+  				  <div class="cancel-button">CANCEL</div>
+  				  <div class="save-button">SCHEDULE</div>
+  			  </div>
+
+  		 </div>
+  	 </div>
+   </div>
+
+
+</body>
+</html>
