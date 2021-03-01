@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome!</title>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+
+
+    <!-- Init FireBase -->
+    <script src="js/firebaseinit.js"></script>
+
+    <!-- Init auth -->
+    <script src="js/auth.js"></script>
+
+    <!--====== Bootstrap CSS ======-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!--====== Local CSS ======-->
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/book.css">
+    <link rel="stylesheet" href="css/signin.css">
+
+    <!-- ====== Local script ====== -->
+    <script src="js/main.js"></script>
+</head>
+<body>
+
+    <div class="signin_page_main">
+
+        <div class = "logo_top_left">
+            <a class="navbar-brand" href="/index.html">
+                <img src="images/logo.jpg" class="img-fluid" width="20%">
+            </a>
+        </div>
+
+        <div class = "center">
+            <div class = "title_2"><h2 id = "sign_in_text">Sign In or Sign Up</h2></div>
+            <!-- <img src="images/family.png" class="login_image" /> -->
+            
+            <div class = "signin_window">
+                
+                <div class="sign_in_buttons">
+                    <div id="firebaseui-auth-container"></div>
+                    <div id="loader">Loading...</div>
+                </div>
+                
+            </div>
+        </div>
+        
+
+    </div>
+</body>
+
+<!-- Additional page loading -->
+<script src="js/page_set.js"></script>
+
+</html>
