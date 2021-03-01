@@ -11,8 +11,7 @@
   <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
   <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
   <link rel="stylesheet" href="css/clinician.css">
-  <link rel="stylesheet" href="css/calendar.css"
-</head>
+  <link rel="stylesheet" href="css/calendar.css" </head>
 
 <body>
   <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
@@ -73,6 +72,7 @@
       } else {
         console.log("No data available");
       }
+
     }).catch(function(error) {
       console.error(error);
     });
@@ -105,10 +105,23 @@
     </div>
     <div class="row">
       <div class="col-3">
-        <img src="images/profile.png" width="70%" height="100%">
+        <img src="images/profile.png">
         <div class="w-100"></div>
+        <div class="row">
+          <div class="col" style="color:#12355B;">
+            <p id="name">Name:</p>
+          </div>
+          <div class="w-100"></div>
+          <div class="col" style="color:#12355B;margin-top: -10px">
+            <p id="email">E-mail:</p>
+          </div>
+          <div class="w-100"></div>
+          <div class="col" style="color:#12355B;margin-top: -10px;">
+            <p id="phone">Phone:</p>
+          </div>
+        </div>
       </div>
-      <div class="col-4 mr-2" style="background-color:#ebebeb">
+      <div class="col-4" style="background-color:#ebebeb">
         <li id="NAME" class="d-flex">
           <div>
             <div style="display:inline;">
@@ -128,31 +141,19 @@
             </div>
           </div>
         </li>
-        <div class="col-4">
+      </div>
+      <div class="col-3">
 
-
-        </div>
+        <img src="images/calendar.png" width="151%">
       </div>
     </div>
-    <div class="row">
-      <div class="col" style="color:#12355B;">
-        <p id="name">Name:</p>
-      </div>
-      <div class="w-100"></div>
-      <div class="col" style="color:#12355B;margin-top: -10px">
-        <p id="email">E-mail:</p>
-      </div>
-      <div class="w-100"></div>
-      <div class="col" style="color:#12355B;margin-top: -10px;">
-        <p id="phone">Phone:</p>
-      </div>
-    </div>
+
   </div>
 
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
 </body>
 
 </html>
