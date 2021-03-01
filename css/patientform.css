@@ -20,11 +20,21 @@ h3 {
 }
 
 h4 {
-  color: #E0AF27;
+  color: #12355B;
+}
+
+h5 {
+  color: #154675;
 }
 
 a {
   color: #154675;
+}
+
+hr {
+  margin: 2rem 0 2rem 0;
+  border: 0;
+  border-top: 1px solid #154675;
 }
 
 .input-field {
@@ -44,8 +54,21 @@ a {
   margin-bottom: 2%;
 }
 
+#btn-add-client-allergy {
+  background-color: #E0AF27;
+  border: 0;
+  margin: 10px 0px 10px 0px;
+}
+
+#btn-add-child {
+  border: 0;
+  width: 50%;
+  margin: 10px 0px 10px 0px;
+}
+
 #btn-next {
   background-color: #12355B;
-  width: 80%;
+  border: 0;
+  width: 50%;
   margin: 10px 0px 10px 0px;
 }

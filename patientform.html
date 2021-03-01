@@ -8,7 +8,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/patientform.css">
-  <script src="js/patientform.js" charset="utf-8"></script>
+  <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  <!-- <script src="js/patientform.js" charset="utf-8"></script> -->
   <title>MCT Booking Portal</title>
 </head>
 <body>
@@ -21,25 +23,520 @@
   <div id="patient-container">
     <h2>Schedule Appointment</h2>
 
+    <script type="text/javascript">
+      function parentChildCheck() {
+        if (document.getElementById('parentRadio').checked) {
+            document.getElementById('patient-form-divider').style.display = 'block';
+            // show parent form
+            document.getElementById('parent-container').style.display = 'block';
+            document.getElementById('client-container').style.display = 'none';
+            document.getElementById('child-container1').style.display = 'block';
+            document.getElementById('child-container1-divider').style.display = 'block';
+        } else if (document.getElementById('childRadio').checked) {
+            // show client form
+            document.getElementById('patient-form-divider').style.display = 'block';
+            document.getElementById('client-container').style.display = 'block';
+            document.getElementById('parent-container').style.display = 'none';
+            document.getElementById('child-container1').style.display = 'none';
+            document.getElementById('child-container1-divider').style.display = 'none';
+        } else {
+            // hide both parent and client forms
+            document.getElementById('parent-container').style.display = 'none';
+            document.getElementById('client-container').style.display = 'none';
+            document.getElementById('child-container1').style.display = 'none';
+            document.getElementById('child-container1-divider').style.display = 'block';
+        }
+      }
+    </script>
+
     <div id="patient-form-container">
       <div id="parent-child-container">
-        <p>Who is booking the appointment?</p>
+        <b>Who is booking the appointment?</b>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="exampleRadios" id="parentRadio" onclick="javascript:parentChildCheck();" value="parent">
+          <input class="form-check-input" type="radio" name="exampleRadios" id="parentRadio" onclick="parentChildCheck();" value="parent">
           <label class="form-check-label" for="parentRadio">
-            I am a parent or guardian.
+            I am a parent or guardian of the client.
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="exampleRadios" id="childRadio" onclick="javascript:parentChildCheck();" value="child">
+          <input class="form-check-input" type="radio" name="exampleRadios" id="childRadio" onclick="parentChildCheck();" value="child">
           <label class="form-check-label" for="childRadio">
-            I am the child.
+            I am the client.
           </label>
         </div>
       </div>
 
-      <div id="child-container" style="display:blocked">
-        <h3>Child Form</h3>
+      <hr id="patient-form-divider" style="display:none"></hr>
+
+      <div id="client-container" style="display:none">
+        <h3>Client Form</h3>
+        <form>
+          <div class="form-row">
+            <div class="form-group col-md-6" style="padding-right:2%;">
+              <div class="input-field">
+                <label for="inputFirstName">First Name</label>
+                <input type="text" class="form-control" id="inputFirstName" placeholder="First name">
+              </div>
+
+              <div class="input-field">
+                <label for="inputLastName">Last Name</label>
+                <input type="text" class="form-control" id="inputLastName" placeholder="Last name">
+              </div>
+
+              <div class="input-field">
+                <label for="inputDateOfBirth">Date of Birth</label>
+                <input type="date" class="form-control" id="inputDateOfBirth">
+              </div>
+
+              <div class="input-field">
+                <label for="inputGender">Gender</label>
+                <select id="inputGender" class="form-control" required=true>
+                  <option selected>Select one</option>
+                  <option>Female</option>
+                  <option>Male</option>
+                  <option>Non-binary</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="input-field">
+                <label for="inputGenderOther">If other, please specify:</label>
+                <input type="text" class="form-control" id="inputGenderOther">
+              </div>
+
+              <div class="input-field">
+                <label for="inputPreferredLanguage">Preferred Language</label>
+                <select id="inputPreferredLanguage" class="form-control" required=true>
+                  <option selected>Select one</option>
+                  <option>English</option>
+                  <option>Spanish</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="input-field">
+                <label for="inputPreferredLanguageOther">If other, please specify:</label>
+                <input type="text" class="form-control" id="inputPreferredLanguageOther">
+              </div>
+
+              <div class="input-field">
+                <label for="inputEthnicity">Ethnicity</label>
+                <select id="inputEthnicity" class="form-control">
+                  <option selected>Select one</option>
+                  <option>American Indian or Alaska Native</option>
+                  <option>Asian</option>
+                  <option>Black or African American</option>
+                  <option>Hispanic or Latino</option>
+                  <option>Native Hawaiian or Other Pacific Islander</option>
+                  <option>White</option>
+                </select>
+              </div>
+
+              <div class="input-field">
+                <div class="input-physical-address">
+                  <label for="inputPhysicalAddress">Physical Address</label>
+                  <input type="text" class="form-control" id="inputPhysicalAddress" style="margin-bottom:4px;" placeholder="Street address">
+                  <input type="text" class="form-control" id="inputPhysicalAddress2" style="margin-bottom:4px;" placeholder="Apartment number, unit, floor, etc.">
+                  <select id="inputPhysicalAddressState" class="form-control" style="margin-bottom:4px;">
+                    <option value="state">State</option>
+              			<option value="AL">Alabama</option>
+              			<option value="AK">Alaska</option>
+              			<option value="AZ">Arizona</option>
+              			<option value="AR">Arkansas</option>
+              			<option value="CA">California</option>
+              			<option value="CO">Colorado</option>
+              			<option value="CT">Connecticut</option>
+              			<option value="DE">Delaware</option>
+              			<option value="DC">District Of Columbia</option>
+              			<option value="FL">Florida</option>
+              			<option value="GA">Georgia</option>
+              			<option value="HI">Hawaii</option>
+              			<option value="ID">Idaho</option>
+              			<option value="IL">Illinois</option>
+              			<option value="IN">Indiana</option>
+              			<option value="IA">Iowa</option>
+              			<option value="KS">Kansas</option>
+              			<option value="KY">Kentucky</option>
+              			<option value="LA">Louisiana</option>
+              			<option value="ME">Maine</option>
+              			<option value="MD">Maryland</option>
+              			<option value="MA">Massachusetts</option>
+              			<option value="MI">Michigan</option>
+              			<option value="MN">Minnesota</option>
+              			<option value="MS">Mississippi</option>
+              			<option value="MO">Missouri</option>
+              			<option value="MT">Montana</option>
+              			<option value="NE">Nebraska</option>
+              			<option value="NV">Nevada</option>
+              			<option value="NH">New Hampshire</option>
+              			<option value="NJ">New Jersey</option>
+              			<option value="NM">New Mexico</option>
+              			<option value="NY">New York</option>
+              			<option value="NC">North Carolina</option>
+              			<option value="ND">North Dakota</option>
+              			<option value="OH">Ohio</option>
+              			<option value="OK">Oklahoma</option>
+              			<option value="OR">Oregon</option>
+              			<option value="PA">Pennsylvania</option>
+              			<option value="RI">Rhode Island</option>
+              			<option value="SC">South Carolina</option>
+              			<option value="SD">South Dakota</option>
+              			<option value="TN">Tennessee</option>
+              			<option value="TX">Texas</option>
+              			<option value="UT">Utah</option>
+              			<option value="VT">Vermont</option>
+              			<option value="VA">Virginia</option>
+              			<option value="WA">Washington</option>
+              			<option value="WV">West Virginia</option>
+              			<option value="WI">Wisconsin</option>
+              			<option value="WY">Wyoming</option>
+              		</select>
+                  <input type="text" class="form-control" id="inputPhysicalAddressZipCode" style="margin-bottom:4px;" placeholder="Zip Code">
+                </div>
+              </div>
+
+              <div class="input-field">
+                <div class="input-mailing-address">
+                  <label for="inputMailingAddress">Mailing Address</label>
+                  <input type="text" class="form-control" id="inputMailingAddress" style="margin-bottom:4px;" placeholder="Street address">
+                  <input type="text" class="form-control" id="inputMailingAddress2" style="margin-bottom:4px;" placeholder="Apartment number, unit, floor, etc.">
+                  <select id="inputMailingAddressState" class="form-control" style="margin-bottom:4px;">
+                    <option value="state">State</option>
+              			<option value="AL">Alabama</option>
+              			<option value="AK">Alaska</option>
+              			<option value="AZ">Arizona</option>
+              			<option value="AR">Arkansas</option>
+              			<option value="CA">California</option>
+              			<option value="CO">Colorado</option>
+              			<option value="CT">Connecticut</option>
+              			<option value="DE">Delaware</option>
+              			<option value="DC">District Of Columbia</option>
+              			<option value="FL">Florida</option>
+              			<option value="GA">Georgia</option>
+              			<option value="HI">Hawaii</option>
+              			<option value="ID">Idaho</option>
+              			<option value="IL">Illinois</option>
+              			<option value="IN">Indiana</option>
+              			<option value="IA">Iowa</option>
+              			<option value="KS">Kansas</option>
+              			<option value="KY">Kentucky</option>
+              			<option value="LA">Louisiana</option>
+              			<option value="ME">Maine</option>
+              			<option value="MD">Maryland</option>
+              			<option value="MA">Massachusetts</option>
+              			<option value="MI">Michigan</option>
+              			<option value="MN">Minnesota</option>
+              			<option value="MS">Mississippi</option>
+              			<option value="MO">Missouri</option>
+              			<option value="MT">Montana</option>
+              			<option value="NE">Nebraska</option>
+              			<option value="NV">Nevada</option>
+              			<option value="NH">New Hampshire</option>
+              			<option value="NJ">New Jersey</option>
+              			<option value="NM">New Mexico</option>
+              			<option value="NY">New York</option>
+              			<option value="NC">North Carolina</option>
+              			<option value="ND">North Dakota</option>
+              			<option value="OH">Ohio</option>
+              			<option value="OK">Oklahoma</option>
+              			<option value="OR">Oregon</option>
+              			<option value="PA">Pennsylvania</option>
+              			<option value="RI">Rhode Island</option>
+              			<option value="SC">South Carolina</option>
+              			<option value="SD">South Dakota</option>
+              			<option value="TN">Tennessee</option>
+              			<option value="TX">Texas</option>
+              			<option value="UT">Utah</option>
+              			<option value="VT">Vermont</option>
+              			<option value="VA">Virginia</option>
+              			<option value="WA">Washington</option>
+              			<option value="WV">West Virginia</option>
+              			<option value="WI">Wisconsin</option>
+              			<option value="WY">Wyoming</option>
+              		</select>
+                  <input type="text" class="form-control" id="inputMailingAddressZipCode" style="margin-bottom:4px;" placeholder="Zip Code">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6" style="padding-left:2%;">
+              <div class="input-field">
+                <label for="inputInsuranceType">Insurance Type</label>
+                <select id="inputInsuranceType" class="form-control" required=true>
+                  <option selected>Select one</option>
+                  <option>IEHP</option>
+                  <option>Medicaid</option>
+                </select>
+              </div>
+
+              <div class="input-field">
+                <label for="inputInsuranceNumber">Insurance Number</label>
+                <input type="text" class="form-control" id="inputInsuranceNumber" placeholder="Insurance number" required=true>
+              </div>
+
+              <div class="input-field">
+                <label for="inputBirthCounty">County of Birth</label>
+                <input type="text" class="form-control" id="inputBirthCounty" placeholder="County" required=true>
+              </div>
+
+              <div class="input-field">
+                <label for="inputBirthState">State of Birth</label>
+                <input type="text" class="form-control" id="inputBirthState" placeholder="State" required=true>
+              </div>
+
+              <div class="input-field">
+                <label for="inputSchoolAttending">School Attending</label>
+                <input type="text" class="form-control" id="inputSchoolAttending" placeholder="School" required=true>
+              </div>
+
+              <div class="input-field">
+                <label for="inputGradeLevel">Last Completed Grade Level</label>
+                <input type="text" class="form-control" id="inputGradeLevel" placeholder="Grade Level" required=true>
+              </div>
+
+              <div class="input-field">
+                <label for="inputEmploymentStatus">Employment Status</label>
+                <select id="inputEmploymentStatus" class="form-control" required=true>
+                  <option selected>Select one</option>
+                  <option>Student</option>
+                  <option>Unemployed</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="input-field">
+                <label for="inputEmploymentStatusOther">If other, please specify:</label>
+                <input type="text" class="form-control" id="inputEmploymentStatusOther">
+              </div>
+
+              <div class="input-field">
+                <label for="inputMaritalStatus">Marital Status</label>
+                <select id="inputMaritalStatus" class="form-control" required=true>
+                  <option selected>Select one</option>
+                  <option>Married</option>
+                  <option>Never Married</option>
+                  <option>Domestic Partnership</option>
+                  <option>Dissolved</option>
+                  <option>Separated</option>
+                </select>
+              </div>
+
+              <div class="input-field">
+                <label for="inputLivingArrangement">Living Arrangement</label>
+                <select id="inputLivingArrangement" class="form-control" required=true>
+                  <option selected>Select one</option>
+                  <option>Family</option>
+                  <option>Extended Family</option>
+                  <option>Friend</option>
+                  <option>Foster Family</option>
+                  <option>Lives Alone</option>
+                  <option>Homeless</option>
+                  <option>Group Home</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="input-field">
+                <label for="inputLivingArrangementOther">If other, please specify:</label>
+                <input type="text" class="form-control" id="inputLivingArrangementOther">
+              </div>
+
+              <div class="input-field">
+                <label for="inputDependentsOver18">How many dependents over 18 does the client have?</label>
+                <input type="number" class="form-control" id="inputDependentsOver18" placeholder="If none, please put 0" required=true>
+              </div>
+
+              <div class="input-field">
+                <label for="inputDependentsUnder18">How many dependents under 18 does the client have?</label>
+                <input type="number" class="form-control" id="inputDependentsUnder18" placeholder="If none, please put 0" required=true>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6" style="padding-right:2%;">
+              <div id="client-allergies-container">
+                <h4>Allergies</h4>
+
+                <button class="btn btn-primary" id="btn-add-client-allergy" onclick="addClientAllergy()">Add Allergy</button>
+
+                <script type="text/javascript">
+                  var clientAllergyCount = 1;
+
+                  function addClientAllergy() {
+                    var allergyForm = document.getElementById('client-allergy-container1');
+                    var parent = document.getElementById('client-allergy-container' + clientAllergyCount);
+                    var clone = parent.cloneNode(true);
+                    clientAllergyCount++;
+                    clone.setAttribute('id', 'client-allergy-container' + clientAllergyCount);
+                    clone.getElementsByClassName('h5')[0].innerHTML = "Allergy " + clientAllergyCount;
+                    parent.appendChild(clone);
+                  }
+                </script>
+
+                <div id="client-allergy-container1">
+                  <h5>Allergy 1</h5>
+                  <div class="input-field">
+                    <label for="inputAllergies">Allergy</label>
+                    <input type="text" class="form-control" id="inputAllergies" placeholder="Allergy">
+                  </div>
+
+                  <div class="input-field">
+                    <label for="inputReaction">Reaction to Allergan</label>
+                    <input type="text" class="form-control" id="inputReaction" placeholder="Allergic reaction">
+                  </div>
+
+                  <div class="input-field">
+                    <label for="inputAllergyStartDate">Date allergy reaction began?</label>
+                    <input type="date" class="form-control" id="inputStartDate">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6" style="padding-left:2%;">
+
+          </div>
+
+          <button type="submit" class="btn btn-primary mx-auto d-block" id="btn-next">Next</button>
+        </form>
+      </div>
+
+      <div id="parent-container" style="display:none">
+        <h3>Parent/Guardian Form</h3>
+        <form>
+          <div id="parent-form-row" class="form-row">
+            <div class="form-group col-md-6" style="padding-right:2%;">
+              <div class="input-field">
+                <label for="inputFirstName">First Name</label>
+                <input type="text" class="form-control" id="inputFirstName" placeholder="First name" required=true>
+              </div>
+
+              <div class="input-field">
+                <label for="inputLastName">Last Name</label>
+                <input type="text" class="form-control" id="inputLastName" placeholder="Last name" required=true>
+              </div>
+
+              <div class="input-field">
+                <label for="inputPhone">Phone Number</label>
+                <input type="tel" class="form-control" id="inputPhone" placeholder="Phone number" required=true>
+              </div>
+
+              <div class="input-field">
+                <label for="inputEmail">Email Address</label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email address" required=true>
+              </div>
+
+              <div class="input-field">
+                <label for="inputRelationship">Relationship to Child</label>
+                <select id="inputRelationship" class="form-control" required=true>
+                  <option selected>Select one</option>
+                  <option>Biological Mother</option>
+                  <option>Biological Father</option>
+                  <option>Grandmother</option>
+                  <option>Grandfather</option>
+                  <option>Aunt</option>
+                  <option>Uncle</option>
+                  <option>Foster Parent</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="input-field">
+                <label for="inputRelationshipOther">If other, please specify:</label>
+                <input type="text" class="form-control" id="inputRelationshipOther">
+              </div>
+
+              <div class="input-field">
+                <label for="inputLegalGuardian">Legal Guardian</label>
+                <select id="inputLegalGuardian" class="form-control" required=true>
+                  <option selected>Yes</option>
+                  <option>No</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6" style="padding-left:2%;">
+              <div class="input-field">
+                <p>Would you like to be included on our mailing list to receive our newsletter and information on events?</p>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="yesTrainingRadio" onclick="javascript:freeTrainingCheck();" value="yes">
+                  <label class="form-check-label" for="yesTrainingRadio">
+                    Yes
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="noTrainingRadio" onclick="javascript:freeTrainingCheck();" value="no">
+                  <label class="form-check-label" for="noTrainingRadio" selected=true>
+                    No
+                  </label>
+                </div>
+              </div>
+
+              <div class="input-field">
+                <p>Do you have any children in your family under 6?</p>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="yesRadio" onclick="javascript:childUnder6Check();" value="yes">
+                  <label class="form-check-label" for="yesRadio">
+                    Yes
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="noRadio" onclick="javascript:childUnder6Check();" value="no">
+                  <label class="form-check-label" for="noRadio" selected=true>
+                    No
+                  </label>
+                </div>
+              </div>
+
+              <div class="input-field">
+                <p>If yes, would you be interested in having one of our parenting experts reach out to you about some free training?</p>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="yesTrainingRadio" onclick="javascript:freeTrainingCheck();" value="yes">
+                  <label class="form-check-label" for="yesTrainingRadio">
+                    Yes
+                  </label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="noTrainingRadio" onclick="javascript:freeTrainingCheck();" value="no">
+                  <label class="form-check-label" for="noTrainingRadio" selected=true>
+                    No
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-secondary mx-auto d-block" id="btn-add-child" onclick="addChild()">Add a Child</button>
+          <button type="submit" class="btn btn-primary mx-auto d-block" id="btn-next">Next</button>
+          <script type="text/javascript">
+            var childCount = 0;
+
+            function addChild() {
+              var childForm = document.getElementById('child-container1');
+              var clone = childForm.cloneNode(true);
+              var divider = document.getElementById('patient-form-divider');
+              var dividerClone = divider.cloneNode(true);
+              var parent = document.getElementById('parent-form-row');
+
+              if (childCount > 0) {
+                parent = document.getElementById('child-container' + childCount);
+              }
+
+              childCount++;
+              clone.setAttribute('id', 'child-container' + childCount);
+              clone.getElementsByClassName('h3')[0].innerHTML = "Child " + childCount;
+              parent.appendChild(clone);
+            }
+          </script>
+        </form>
+      </div>
+
+      <hr id="child-container1-divider" style="display:none"></hr>
+
+      <div id="child-container1" style="display:none">
+        <h3>Child 1</h3>
         <div class="form-row">
           <div class="form-group col-md-6" style="padding-right:2%;">
             <div class="input-field">
@@ -57,20 +554,20 @@
               <input type="date" class="form-control" id="inputDateOfBirth">
             </div>
 
-            <div class="input-field" id="gender-container">
-              <p>Gender</p>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="femaleRadio" onclick="javascript:genderCheck();" value="female">
-                <label class="form-check-label" for="femaleRadio">
-                  Yes
-                </label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="exampleRadios" id="maleRadio" onclick="javascript:genderCheck();" value="male">
-                <label class="form-check-label" for="maleRadio">
-                  No
-                </label>
-              </div>
+            <div class="input-field">
+              <label for="inputGender">Gender</label>
+              <select id="inputGender" class="form-control" required=true>
+                <option selected>Select one</option>
+                <option>Female</option>
+                <option>Male</option>
+                <option>Non-binary</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="input-field">
+              <label for="inputGenderOther">If other, please specify:</label>
+              <input type="text" class="form-control" id="inputGenderOther">
             </div>
 
             <div class="input-field">
@@ -79,7 +576,13 @@
                 <option selected>Select one</option>
                 <option>English</option>
                 <option>Spanish</option>
+                <option>Other</option>
               </select>
+            </div>
+
+            <div class="input-field">
+              <label for="inputPreferredLanguageOther">If other, please specify:</label>
+              <input type="text" class="form-control" id="inputPreferredLanguageOther">
             </div>
 
             <div class="input-field">
@@ -98,17 +601,128 @@
             <div class="input-field">
               <div class="input-physical-address">
                 <label for="inputPhysicalAddress">Physical Address</label>
-                <input type="text" class="form-control" id="inputPhysicalAddress" placeholder="Physical address">
+                <input type="text" class="form-control" id="inputPhysicalAddress" style="margin-bottom:4px;" placeholder="Street address">
+                <input type="text" class="form-control" id="inputPhysicalAddress2" style="margin-bottom:4px;" placeholder="Apartment number, unit, floor, etc.">
+                <select id="inputPhysicalAddressState" class="form-control" style="margin-bottom:4px;">
+                  <option value="state">State</option>
+                  <option value="AL">Alabama</option>
+                  <option value="AK">Alaska</option>
+                  <option value="AZ">Arizona</option>
+                  <option value="AR">Arkansas</option>
+                  <option value="CA">California</option>
+                  <option value="CO">Colorado</option>
+                  <option value="CT">Connecticut</option>
+                  <option value="DE">Delaware</option>
+                  <option value="DC">District Of Columbia</option>
+                  <option value="FL">Florida</option>
+                  <option value="GA">Georgia</option>
+                  <option value="HI">Hawaii</option>
+                  <option value="ID">Idaho</option>
+                  <option value="IL">Illinois</option>
+                  <option value="IN">Indiana</option>
+                  <option value="IA">Iowa</option>
+                  <option value="KS">Kansas</option>
+                  <option value="KY">Kentucky</option>
+                  <option value="LA">Louisiana</option>
+                  <option value="ME">Maine</option>
+                  <option value="MD">Maryland</option>
+                  <option value="MA">Massachusetts</option>
+                  <option value="MI">Michigan</option>
+                  <option value="MN">Minnesota</option>
+                  <option value="MS">Mississippi</option>
+                  <option value="MO">Missouri</option>
+                  <option value="MT">Montana</option>
+                  <option value="NE">Nebraska</option>
+                  <option value="NV">Nevada</option>
+                  <option value="NH">New Hampshire</option>
+                  <option value="NJ">New Jersey</option>
+                  <option value="NM">New Mexico</option>
+                  <option value="NY">New York</option>
+                  <option value="NC">North Carolina</option>
+                  <option value="ND">North Dakota</option>
+                  <option value="OH">Ohio</option>
+                  <option value="OK">Oklahoma</option>
+                  <option value="OR">Oregon</option>
+                  <option value="PA">Pennsylvania</option>
+                  <option value="RI">Rhode Island</option>
+                  <option value="SC">South Carolina</option>
+                  <option value="SD">South Dakota</option>
+                  <option value="TN">Tennessee</option>
+                  <option value="TX">Texas</option>
+                  <option value="UT">Utah</option>
+                  <option value="VT">Vermont</option>
+                  <option value="VA">Virginia</option>
+                  <option value="WA">Washington</option>
+                  <option value="WV">West Virginia</option>
+                  <option value="WI">Wisconsin</option>
+                  <option value="WY">Wyoming</option>
+                </select>
+                <input type="text" class="form-control" id="inputPhysicalAddressZipCode" style="margin-bottom:4px;" placeholder="Zip Code">
               </div>
             </div>
 
             <div class="input-field">
               <div class="input-mailing-address">
                 <label for="inputMailingAddress">Mailing Address</label>
-                <input type="text" class="form-control" id="inputMailingAddress" placeholder="Mailing address">
+                <input type="text" class="form-control" id="inputMailingAddress" style="margin-bottom:4px;" placeholder="Street address">
+                <input type="text" class="form-control" id="inputMailingAddress2" style="margin-bottom:4px;" placeholder="Apartment number, unit, floor, etc.">
+                <select id="inputMailingAddressState" class="form-control" style="margin-bottom:4px;">
+                  <option value="state">State</option>
+                  <option value="AL">Alabama</option>
+                  <option value="AK">Alaska</option>
+                  <option value="AZ">Arizona</option>
+                  <option value="AR">Arkansas</option>
+                  <option value="CA">California</option>
+                  <option value="CO">Colorado</option>
+                  <option value="CT">Connecticut</option>
+                  <option value="DE">Delaware</option>
+                  <option value="DC">District Of Columbia</option>
+                  <option value="FL">Florida</option>
+                  <option value="GA">Georgia</option>
+                  <option value="HI">Hawaii</option>
+                  <option value="ID">Idaho</option>
+                  <option value="IL">Illinois</option>
+                  <option value="IN">Indiana</option>
+                  <option value="IA">Iowa</option>
+                  <option value="KS">Kansas</option>
+                  <option value="KY">Kentucky</option>
+                  <option value="LA">Louisiana</option>
+                  <option value="ME">Maine</option>
+                  <option value="MD">Maryland</option>
+                  <option value="MA">Massachusetts</option>
+                  <option value="MI">Michigan</option>
+                  <option value="MN">Minnesota</option>
+                  <option value="MS">Mississippi</option>
+                  <option value="MO">Missouri</option>
+                  <option value="MT">Montana</option>
+                  <option value="NE">Nebraska</option>
+                  <option value="NV">Nevada</option>
+                  <option value="NH">New Hampshire</option>
+                  <option value="NJ">New Jersey</option>
+                  <option value="NM">New Mexico</option>
+                  <option value="NY">New York</option>
+                  <option value="NC">North Carolina</option>
+                  <option value="ND">North Dakota</option>
+                  <option value="OH">Ohio</option>
+                  <option value="OK">Oklahoma</option>
+                  <option value="OR">Oregon</option>
+                  <option value="PA">Pennsylvania</option>
+                  <option value="RI">Rhode Island</option>
+                  <option value="SC">South Carolina</option>
+                  <option value="SD">South Dakota</option>
+                  <option value="TN">Tennessee</option>
+                  <option value="TX">Texas</option>
+                  <option value="UT">Utah</option>
+                  <option value="VT">Vermont</option>
+                  <option value="VA">Virginia</option>
+                  <option value="WA">Washington</option>
+                  <option value="WV">West Virginia</option>
+                  <option value="WI">Wisconsin</option>
+                  <option value="WY">Wyoming</option>
+                </select>
+                <input type="text" class="form-control" id="inputMailingAddressZipCode" style="margin-bottom:4px;" placeholder="Zip Code">
               </div>
             </div>
-
           </div>
 
           <div class="form-group col-md-6" style="padding-left:2%;">
@@ -116,213 +730,142 @@
               <label for="inputInsuranceType">Insurance Type</label>
               <select id="inputInsuranceType" class="form-control" required=true>
                 <option selected>Select one</option>
-                <option>Medi-Cal</option>
+                <option>IEHP</option>
                 <option>Medicaid</option>
               </select>
             </div>
 
             <div class="input-field">
               <label for="inputInsuranceNumber">Insurance Number</label>
-              <input type="text" class="form-control" id="inputInsuranceNumber" placeholder="Insurance number">
+              <input type="text" class="form-control" id="inputInsuranceNumber" placeholder="Insurance number" required=true>
             </div>
 
             <div class="input-field">
-              <label for="inputConservatorship">Conservatorship</label>
-              <input type="text" class="form-control" id="inputConservatorship" placeholder="Conservatorship">
+              <label for="inputBirthCounty">County of Birth</label>
+              <input type="text" class="form-control" id="inputBirthCounty" placeholder="County" required=true>
             </div>
 
             <div class="input-field">
-              <label for="inputAdminNecessity">Admin Necessity</label>
-              <input type="text" class="form-control" id="inputAdminNecessity" placeholder="Admin necessity">
-            </div>
-
-            <div class="input-code">
-              <label for="inputCode">Code</label>
-              <input type="text" class="form-control" id="inputCode" placeholder="Code">
+              <label for="inputBirthState">State of Birth</label>
+              <input type="text" class="form-control" id="inputBirthState" placeholder="State" required=true>
             </div>
 
             <div class="input-field">
-              <label for="inputLegalClass">Legal Class</label>
-              <input type="text" class="form-control" id="inputLegalClass" placeholder="Legal class">
+              <label for="inputSchoolAttending">School Attending</label>
+              <input type="text" class="form-control" id="inputSchoolAttending" placeholder="School" required=true>
             </div>
 
             <div class="input-field">
-              <label for="inputAllergies">Allergies</label>
-              <input type="text" class="form-control" id="inputAllergies" placeholder="List allergies">
+              <label for="inputGradeLevel">Last Completed Grade Level</label>
+              <input type="text" class="form-control" id="inputGradeLevel" placeholder="Grade Level" required=true>
             </div>
 
             <div class="input-field">
-              <label for="inputReaction">Reaction</label>
-              <input type="text" class="form-control" id="inputReaction" placeholder="List allergic reactions">
+              <label for="inputEmploymentStatus">Employment Status</label>
+              <select id="inputEmploymentStatus" class="form-control" required=true>
+                <option selected>Select one</option>
+                <option>Student</option>
+                <option>Unemployed</option>
+                <option>Other</option>
+              </select>
             </div>
 
             <div class="input-field">
-              <label for="inputStartDate">Start Date</label>
-              <input type="date" class="form-control" id="inputStartDate">
+              <label for="inputEmploymentStatusOther">If other, please specify:</label>
+              <input type="text" class="form-control" id="inputEmploymentStatusOther">
+            </div>
+
+            <div class="input-field">
+              <label for="inputMaritalStatus">Marital Status</label>
+              <select id="inputMaritalStatus" class="form-control" required=true>
+                <option selected>Select one</option>
+                <option>Married</option>
+                <option>Never Married</option>
+                <option>Domestic Partnership</option>
+                <option>Dissolved</option>
+                <option>Separated</option>
+              </select>
+            </div>
+
+            <div class="input-field">
+              <label for="inputLivingArrangement">Living Arrangement</label>
+              <select id="inputLivingArrangement" class="form-control" required=true>
+                <option selected>Select one</option>
+                <option>Family</option>
+                <option>Extended Family</option>
+                <option>Friend</option>
+                <option>Foster Family</option>
+                <option>Lives Alone</option>
+                <option>Homeless</option>
+                <option>Group Home</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="input-field">
+              <label for="inputLivingArrangementOther">If other, please specify:</label>
+              <input type="text" class="form-control" id="inputLivingArrangementOther">
+            </div>
+
+            <div class="input-field">
+              <label for="inputDependentsOver18">How many dependents over 18 does the client have?</label>
+              <input type="number" class="form-control" id="inputDependentsOver18" placeholder="If none, please put 0" required=true>
+            </div>
+
+            <div class="input-field">
+              <label for="inputDependentsUnder18">How many dependents under 18 does the client have?</label>
+              <input type="number" class="form-control" id="inputDependentsUnder18" placeholder="If none, please put 0" required=true>
             </div>
           </div>
         </div>
 
-      <div id="parent-container" style="display:block">
-        <h3>Parent Form</h3>
-        <form>
-          <div class="form-row">
-            <div class="form-group col-md-6" style="padding-right:2%;">
-              <div class="input-field">
-                <label for="inputFirstName">First Name</label>
-                <input type="text" class="form-control" id="inputFirstName" placeholder="First name">
-              </div>
+        <div class="form-row">
+          <div class="form-group col-md-6" style="padding-right:2%;">
+            <div id="child-allergies-container">
+              <h4>Allergies</h4>
 
-              <div class="input-field">
-                <label for="inputLastName">Last Name</label>
-                <input type="text" class="form-control" id="inputLastName" placeholder="Last name">
-              </div>
+              <button class="btn btn-primary" id="btn-add-child-allergy1" style="background-color: #E0AF27; border: 0; margin: 10px 0px 10px 0px;" onclick="addChildAllergy(this.id)">Add Allergy</button>
+              <script type="text/javascript">
+                var childrenAllergyCount = [0];
 
-              <div class="input-field">
-                <label for="inputRelationship">Relationship to Child</label>
-                <select id="inputRelationship" class="form-control" required=true>
-                  <option selected>Select one</option>
-                  <option>Father</option>
-                  <option>Mother</option>
-                  <option>Other</option>
-                </select>
-              </div>
+                function addChildAllergy(btnId) {
+                    var id = btnId.substring(21, btnId.length);
 
-              <div class="input-field">
-                <label for="inputRelationshipOther">If you chose Other for your relationship, please explain:</label>
-                <input type="text" class="form-control" id="inputRelationshipOther">
-              </div>
+                    var allergyForm = document.getElementById('child-allergy-container1');
+                    var parent = document.getElementById('child-allergy-container' + childrenAllergyCount[id-1]);
+                    var clone = parent.cloneNode(true);
+                    alert("child " + id + ": allergy count " + childrenAllergyCount[id-1]);
+                    childrenAllergyCount[id-1]++;
+                    alert("child " + id + ": allergy count incremented to " + childrenAllergyCount[id-1]);
+                    clone.setAttribute('id', 'child-allergy-container' + childrenAllergyCount[id-1]);
+                    clone.getElementsByClassName('h5')[0].innerHTML = "Allergy " + childrenAllergyCount[id-1];
+                    parent.appendChild(clone);
+                }
+              </script>
 
-              <div class="input-field">
-                <label for="inputPhone">Emergency Contact Number</label>
-                <input type="tel" class="form-control" id="inputPhone" placeholder="Phone number">
-              </div>
-
-              <div class="input-field">
-                <label for="inputEmail">Email Address</label>
-                <input type="email" class="form-control" id="inputEmail" placeholder="Email address">
-              </div>
-
-              <div class="input-field">
-                <label for="inputBirthCounty">County of Birth</label>
-                <input type="text" class="form-control" id="inputBirthCounty" placeholder="County">
-              </div>
-
-              <div class="input-field">
-                <label for="inputBirthState">State of Birth</label>
-                <input type="text" class="form-control" id="inputBirthState" placeholder="State">
-              </div>
-
-              <div class="input-field">
-                <p>Would you like to be included on our mailing list to receive our newsletter and information on events?</p>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="yesTrainingRadio" onclick="javascript:freeTrainingCheck();" value="yes">
-                  <label class="form-check-label" for="yesTrainingRadio">
-                    Yes
-                  </label>
+              <div id="child-allergy-container1">
+                <h5>Allergy 1</h5>
+                <div class="input-field">
+                  <label for="inputAllergies">Allergy</label>
+                  <input type="text" class="form-control" id="inputAllergies" placeholder="Allergy">
                 </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="noTrainingRadio" onclick="javascript:freeTrainingCheck();" value="no">
-                  <label class="form-check-label" for="noTrainingRadio">
-                    No
-                  </label>
+
+                <div class="input-field">
+                  <label for="inputReaction">Reaction to Allergan</label>
+                  <input type="text" class="form-control" id="inputReaction" placeholder="Allergic reaction">
                 </div>
-              </div>
-            </div>
 
-            <div class="form-group col-md-6" style="padding-left:2%;">
-              <div class="input-field">
-                <label for="inputSchoolAttended">School Attended</label>
-                <input type="text" class="form-control" id="inputSchoolAttended" placeholder="School">
-              </div>
-
-              <div class="input-field">
-                <label for="inputEducationLevel">Education Level (last completed grade)</label>
-                <input type="text" class="form-control" id="inputEducationLevel" placeholder="Education">
-              </div>
-
-              <div class="input-field">
-                <label for="inputEmploymentStatus">Employment Status</label>
-                <select id="inputEmploymentStatus" class="form-control" required=true>
-                  <option selected>Select one</option>
-                  <option>Employed</option>
-                  <option>Self-employed</option>
-                  <option>Unemployed</option>
-                </select>
-              </div>
-
-              <div class="input-field">
-                <label for="inputMaritalStatus">Marital Status</label>
-                <select id="inputMaritalStatus" class="form-control" required=true>
-                  <option selected>Select one</option>
-                  <option>Single</option>
-                  <option>Married</option>
-                  <option>Divorced</option>
-                  <option>Separated</option>
-                  <option>Never Married</option>
-                </select>
-              </div>
-
-              <div class="input-field">
-                <label for="inputLivingArrangement">Living Arrangement</label>
-                <input type="text" class="form-control" id="inputLivingArrangement" placeholder="Living arrangement">
-              </div>
-
-              <div class="input-field">
-                <label for="inputDependentsOver18">Dependents Over 18</label>
-                <input type="number" class="form-control" id="inputDependentsOver18" placeholder="Number of dependents over 18">
-              </div>
-
-              <div class="input-field">
-                <label for="inputDependentsUnder18">Dependents Under 18</label>
-                <input type="number" class="form-control" id="inputDependentsUnder18" placeholder="Number of dependents under 18">
-              </div>
-
-              <div class="input-field">
-                <p>Do you have any children in your family under 6?</p>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="yesRadio" onclick="javascript:childUnder6Check();" value="yes">
-                  <label class="form-check-label" for="yesRadio">
-                    Yes
-                  </label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="noRadio" onclick="javascript:childUnder6Check();" value="no">
-                  <label class="form-check-label" for="noRadio">
-                    No
-                  </label>
+                <div class="input-field">
+                  <label for="inputAllergyStartDate">Date allergy reaction began?</label>
+                  <input type="date" class="form-control" id="inputStartDate">
                 </div>
               </div>
 
-              <div class="input-field">
-                <p>If yes, would you be interested in having one of our parenting experts reach out to you about some free training?</p>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="yesTrainingRadio" onclick="javascript:freeTrainingCheck();" value="yes">
-                  <label class="form-check-label" for="yesTrainingRadio">
-                    Yes
-                  </label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="noTrainingRadio" onclick="javascript:freeTrainingCheck();" value="no">
-                  <label class="form-check-label" for="noTrainingRadio">
-                    No
-                  </label>
-                </div>
-              </div>
             </div>
           </div>
-
-          <div class="form-group">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck">
-              <label class="form-check-label" for="gridAddChild">
-                Add a child
-              </label>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary mx-auto d-block" id="btn-next">Next</button>
-        </form>
+        </div>
+        <div class="form-group col-md-6" style="padding-left:2%;">
+        </div>
       </div>
 
     </div>
