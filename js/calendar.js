@@ -1,5 +1,4 @@
 
-
 //change color of time button on click
 $(function () {
     $(".times").click(function () {
