@@ -49,8 +49,29 @@ button{
 	border-radius: 8px;
 	padding: 10px;
 	text-align: center;
-	
 }
+#x{
+	font-family: sans-serif !important;
+	display: inline;
+    float: right;
+    padding:0px;
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    margin-top: -30px;
+}
+.imgContainer{
+	height: 150px;
+	width:150px;
+	overflow: hidden;
+	margin: auto;
+}
+
+.imgContainer img{
+	height: 150px;
+	width: 150px;
+}
+
 .editForm{
 	margin: auto;
 	text-align: center;

@@ -26,7 +26,7 @@
   <div class="container ">
   	<!-- HEADING ROW -->
     <div class="col">
-      <h1 id="profileTitle">Booking Portal</h1>
+      <h1 id="profileTitle">Patient Booking Portal</h1>
     </div>
     
     <div id="patient">
@@ -66,7 +66,7 @@
         
           Scheduled Appointments
         </div>
-        <ul>
+        <ul id="appts">
         <!-- dynamically add each li for appointments -->
         <!-- make a scrollable list -->
 	        <li class="appointment" >
@@ -120,13 +120,10 @@
         </ul>
       </div>
       
-      <!-- CLINICIAN CALENDAR/PATIENT OPTIONS -->
+      <!-- PATIENT OPTIONS -->
       <div class="col-3 ml-2" style="background-color:#E0AF27; padding:5px;">
       <!-- book new appointment -->
       <!-- patient dropdown/selection/add button -->
-        <!-- <div class="col titles">
-          Patients
-        </div> -->
         <div class="col-12 titles">Your Patients</div>
         <div class="col-12">
         	
@@ -137,96 +134,31 @@
         			<option>Child B</option>
       
         		</select>
-        		<button>+ Add A Patient</button>
+        		
         	</form>
+        	<button onclick="location.href='../MCT-Booking-App/patientform.html'">+ Add A Patient</button>
         </div>
                 		
       	
         <div class="col" id="bookNew" onclick="booking.html">
-        	<button>Book New Appointment</button>
+        	<button onclick="location.href='../MCT-Booking-App/book.html'">Book New Appointment</button>
         </div>
       </div>
       
     </div>
-  </div>
-  
-  <!-- SYDNEY'S CLINICIAN PORTAL CODE -->
-  <div id="clinician" style="display:none;">
-   <!--  <div class="row" >
-      <div class="col">
-        <h1 style="color: #12355B; text-align: center; font-weight: 300; margin-bottom: 30px">
-          Clinician Portal</h1>
-      </div>
-    </div> -->
-    <div class="row">
-      <div class="col-3"></div>
-      <div class="col-4 mr-2" style="background-color:#E0AF27;text-align: center; padding:5px;">
-        <div class="">
-          Current Appointments
-        </div>
-      </div>
-      <div class="col-4 ml-2" style="background-color:#E0AF27;text-align: center; padding:5px;">
-        <div class="">
-          Working Hours
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-3">
-        <img src="images/profile.png" width="70%" height="100%">
-        <div class="w-100"></div>
-      </div>
-      <div class="col-4 mr-2" style="background-color:#ebebeb">
-        <li id="NAME" class="d-flex">
-          <div>
-            <div style="display:inline;">
-              <p style="text-align:left;display:inline;"> Name: </p>
-              <p id="clientName" style="text-align:left; display:inline; font-weight:bold;"></p>
-              <br>
-            </div>
-            <div style="display:inline;">
-              <p style="text-align:left;display:inline;"> Service: </p>
-              <p id="service" style="text-align:left; display:inline; font-weight:bold;"></p>
-              <br>
-            </div>
-            <div style="display:inline;">
-              <p style="text-align:left;display:inline;"> Appointment: </p>
-              <p id="appt" style="text-align:left; display:inline; font-weight:bold;"></p>
-              <br>
-            </div>
-          </div>
-        </li>
-        <div class="col-4">
-
-
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col" style="color:#12355B;">
-        <p id="name">Name:</p>
-      </div>
-      <div class="w-100"></div>
-      <div class="col" style="color:#12355B;margin-top: -10px">
-        <p id="email">E-mail:</p>
-      </div>
-      <div class="w-100"></div>
-      <div class="col" style="color:#12355B;margin-top: -10px;">
-        <p id="phone">Phone:</p>
-      </div>
-    </div>
-    </div>
-    
-    <div id="editProfile" style="display:none;">
-	  	<h2 class="editForm">Edit Profile</h2>
+  </div>  
+	<div id="editProfile" style="display:none;">
+		
+	  	<h2 class="editForm"> Edit Profile</h2>
+	  	<button onclick="close()" id="x" >x</button>
 	  	<!-- form with: image upload, username change, password change -->
 	  	<!-- auto fill with current data -->
 	  	<!-- add in error messages, email confirmation, password restrictions -->
 	  	<form class="form-horizonal" role="form">
 	  		<div class="col-4 editForm">
-		  		<img src="images/profile.png" >
+		  		<div class="imgContainer"><img id="profPic" src="images/profile.png" alt="profile image"></div>
 		  		<p>Upload a new photo...</p>
-		  		<input type="file">
+		  		<input type="file" accept="image/png, image/gif, image/jpeg" onchange="readURL(this)">
 	  		</div> 
 	          <div class="form-group">
 	            <label class="col-lg-3 control-label">Username:</label>
@@ -255,14 +187,16 @@
 	         <div class="form-group">
 	            <label class="col-md-3 control-label"></label>
 	            <div class="col-md-12">
-	              <input type="button" class="btn btn-primary" value="Save Changes">
+	              <input id="save" type="button" class="btn btn-primary" value="Save Changes">
 	              <span></span>
-	              <input type="reset" class="btn btn-default" value="Cancel">
+	              <input type="reset" class="btn btn-default" value="Reset">
 	            </div>
           	</div>
-			<br><br>
+			<br>
 	  	</form>
+	  	
   	</div>
+  	<br>
   </div>
   
   

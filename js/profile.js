@@ -1,4 +1,6 @@
+//may get usertype from the url...not sure how it will be passed here yet!
 var userType = "patient";
+var imgChanged = false;
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 
@@ -6,32 +8,57 @@ const urlParams = new URLSearchParams(queryString);
 window.onload = setUp;
 function setUp(){
 	//*add defaults for error, direct to sign in*
-	
-	userType = urlParams.get("user");
-	
-	//default to patient portal 
-	var title = "Patient Booking Portal";
-
-	//access firebase OR URL params (rn) to set the userType
-	if(userType=="clinician"){
-		 title = "Clinician Booking Portal";
-		 document.getElementById("clinician").style.display = "block";
-		 document.getElementById("patient").style.display = "none";
-	}
-	//set the html secitons to show patient info: 
-		//appointments(upcoming, previous), patient selection (+add), book new appt
-	else{
-	
-	}
-	document.getElementById("profileTitle").innerHTML = title;
-	
 	//set the html elements depending on the userType as well!
+	
+	//dynamically append list items for the appts scheduled
 }
 
 function editProfile(){
-	document.getElementById("patient").style.display = "none";
-	document.getElementById("clinician").style.display = "none";
+	document.getElementById(userType).style.display = "none";
 	document.getElementById("editProfile").style.display = "block";
+	
+	//set the form values to the user name, email, password from ~the firebase??~
+	
+	//set event listeners for close and save changes in form
+	document.getElementById("x").addEventListener("click", function(e) {
+		close()
+	});
+	document.getElementById("save").addEventListener("click", function(e) {
+		saveChanges()
+	});
+	
 }
 
+function close(){
+	document.getElementById(userType).style.display = "block";
+	document.getElementById("editProfile").style.display = "none";
+}
 
+function saveChanges(){
+	//ERROR CHECKING
+	
+	//updates to the database
+		//change password, change username, change email 
+	
+	//"Changes Saved!" popup...email confirmation to log back in ?
+	//do we need username and password?
+	if(imgChanged){
+		//save new image url to firebase
+		//reset imgChanged variable to false in case they go back to change again ?
+		imgChanged = false;
+	}
+}
+
+//read imgURL
+function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+            	document.getElementById("profPic").src = e.target.result;
+            };
+
+            reader.readAsDataURL(input.files[0]);
+            imgChanged = true;
+        }
+    }
