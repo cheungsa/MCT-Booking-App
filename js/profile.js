@@ -1,5 +1,6 @@
 //may get usertype from the url...not sure how it will be passed here yet!
 var userType = "patient";
+var profImg = "images/profile.png";
 var imgChanged = false;
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -43,10 +44,15 @@ function saveChanges(){
 	//"Changes Saved!" popup...email confirmation to log back in ?
 	//do we need username and password?
 	if(imgChanged){
-		//save new image url to firebase
+		//save new image url to firebase !!!!!
+		document.getElementById("pic").src = profImage;
 		//reset imgChanged variable to false in case they go back to change again ?
 		imgChanged = false;
 	}
+	
+	window.alert("Saved!");
+	document.getElementById(userType).style.display = "block";
+	document.getElementById("editProfile").style.display = "none";
 }
 
 //read imgURL
@@ -56,6 +62,7 @@ function readURL(input) {
 
             reader.onload = function (e) {
             	document.getElementById("profPic").src = e.target.result;
+            	profImage =  e.target.result;
             };
 
             reader.readAsDataURL(input.files[0]);

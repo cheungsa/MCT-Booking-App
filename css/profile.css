@@ -1,6 +1,5 @@
 html * {
 	color: #12355B;
-	font-family: Roboto !important;
 }
 .d-flex {
   background-color: white;
@@ -58,7 +57,7 @@ button{
     width: 30px;
     height: 30px;
     margin: 5px;
-    margin-top: -30px;
+    margin-top: -33px;
 }
 .imgContainer{
 	height: 150px;
