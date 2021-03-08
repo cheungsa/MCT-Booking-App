@@ -41,6 +41,14 @@ hr {
   padding-bottom: 2%;
 }
 
+.client-allergy-container {
+  margin-top: 1rem;
+}
+
+.child-allergy-container {
+  margin-top: 1rem;
+}
+
 #patient-container {
   padding: 10px;
 }
