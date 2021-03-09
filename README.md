@@ -1,9 +1,13 @@
 # MCT-Booking-App
 
-The code for Deliverable 2 consists of a temporary landing page for the booking portal of the MCT Booking App. It displays the MCT logo, a placeholder section for details about MCT, and a button to the patient's booking portal.
+The code for Deliverable 3 consists of the following pages:  
+1. Booking portal    
+2. Login  
+3. Client intake form  
+4. Client calendar (appointment day/time selection)  
+5. Clinician dashboard  
+6. Client dashboard  
 
-Import this repository into Eclipse. This project provides everything needed to:
+The screenshots directory contains images of the webpages for reference.
 
-Host the web application on a local web server, such as Apache Tomcat.
-
-In the project outline of Eclipse, right-click "run.launch" -> Run As -> "run". It will be hosted on http://localhost:8080.
+Import this repository into Eclipse or Visual Studio. The pages are not linked yet, so the html files can be opened and viewed individually.

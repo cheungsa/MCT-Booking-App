@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome!</title>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+
+
+    <!-- Init FireBase -->
+    <script src="js/firebaseinit.js"></script>
+
+    <!--====== Bootstrap CSS ======-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!--====== Local CSS ======-->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/book.css">
+
+    <!-- ====== Local script ====== -->
+    <script src="js/main.js"></script>
+</head>
+<body>
+
+    <div class="book_page_main">
+
+        <div class = "logo_top_left">
+            <a class="navbar-brand" href="/index.html">
+                <img src="images/logo.jpg" class="img-fluid" width="20%">
+            </a>
+        </div>
+        
+        <div class = "book_page_inner">
+            <div>
+                <h1 class = "book_page_title">Booking Portal</h1>
+            </div>
+
+            <div class = "make_appointment_bar">
+                <h2>Make an appointment</h2>
+            </div>
+            
+            <div class = "make_appointment">
+                <div class = "make_appointment_item" id = "schedule">
+                    <div class = "calendar_small">
+                        <h3>Calendar</h3>
+                    </div>
+                    <a class="btn btn-primary btn-lg book_button" href="/landing.html" role="button" id = "schedule_appointment_button">Schedule Appointment</a>
+                </div>
+                <div class = "make_appointment_item" id = "access_acount">
+                    <div class = "about_booking">
+                        <p>
+                            Welcome! <br/>
+                            For new patients, we offer: <br/>
+                            &ensp; <b>- Initial Consultations</b> <br/>
+                            &ensp; - Appt Type A <br/>
+                            &ensp; - Appt Type B <br/>
+                            <br/>
+                            Returning patients, please access your account below
+
+                        </p>
+                    </div>
+                    <a class="btn btn-primary btn-lg book_button" href="/landing.html" role="button" id = "access_acount_button">Access Account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

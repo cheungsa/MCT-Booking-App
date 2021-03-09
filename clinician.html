@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
+  <link rel="stylesheet" href="css/clinician.css">
+  <link rel="stylesheet" href="css/calendar.css" </head>
+
+<body>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+
+  <script type="text/javascript">
+    var firebaseConfig = {
+      apiKey: "AIzaSyBLC6MnxuYWqEsC6S1guqTkwX19j2Zu1hU",
+      authDomain: "mct-booking-app.firebaseapp.com",
+      databaseURL: "https://mct-booking-app-default-rtdb.firebaseio.com",
+      projectId: "mct-booking-app",
+      storageBucket: "mct-booking-app.appspot.com",
+      messagingSenderId: "965956358066",
+      appId: "1:965956358066:web:947d08185306ffc7b4deab",
+      measurementId: "G-F1TBLKW8EF"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    var database = firebase.database().ref();
+
+    //Query clinician info
+    database.child("clinicians").child("clinician1").get().then(function(snapshot) {
+      if (snapshot.exists()) {
+        // Clinician Info
+        var name = snapshot.val().fname + ' ' + snapshot.val().lname;
+        document.getElementById('name').innerHTML = name;
+        var phone = snapshot.val().phone
+        // Format Phone Number
+        var cleaned = ('' + phone).replace(/\D/g, '')
+        var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+        if (match) {
+          phone = '(' + match[1] + ') ' + match[2] + '-' + match[3]
+        }
+        document.getElementById('phone').innerHTML = phone;
+
+        // Clinician's Clients' Info
+        database.child("clinicians").child("clinician1").child("appointments").get().then(function(clientSnapshot) {
+          if (clientSnapshot.exists()) {
+            clientSnapshot.forEach(function(childSnapshot) {
+              var client = childSnapshot.val().fname + ' ' + childSnapshot.val().lname;
+              document.getElementById('clientName').innerHTML = client;
+              var service = childSnapshot.val().service;
+              document.getElementById('service').innerHTML = service;
+              var appt = childSnapshot.val().date + ' at ' + childSnapshot.val().time;
+              document.getElementById('appt').innerHTML = appt;
+            });
+
+          } else {
+            console.log("No data available");
+          }
+        }).catch(function(error) {
+          console.error(error);
+        });
+
+
+
+      } else {
+        console.log("No data available");
+      }
+
+    }).catch(function(error) {
+      console.error(error);
+    });
+  </script>
+  <nav id="top-nav-bar" class="navbar navbar-light bg-white">
+    <a class="navbar-brand" href="#">
+      <img src="images/logo.jpg" width="20%" height="20%">
+    </a>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1 style="color: #12355B; text-align: center; font-weight: 300; margin-bottom: 30px">
+          Clinician Portal</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="col-4 mr-2" style="background-color:#E0AF27;text-align: center; padding:5px;">
+        <div class="">
+          Current Appointments
+        </div>
+      </div>
+      <div class="col-4 ml-2" style="background-color:#E0AF27;text-align: center; padding:5px;">
+        <div class="">
+          Working Hours
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <img src="images/profile.png">
+        <div class="w-100"></div>
+        <div class="row">
+          <div class="col" style="color:#12355B;">
+            <p id="name">Name:</p>
+          </div>
+          <div class="w-100"></div>
+          <div class="col" style="color:#12355B;margin-top: -10px">
+            <p id="email">E-mail:</p>
+          </div>
+          <div class="w-100"></div>
+          <div class="col" style="color:#12355B;margin-top: -10px;">
+            <p id="phone">Phone:</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-4" style="background-color:#ebebeb">
+        <li id="NAME" class="d-flex">
+          <div>
+            <div style="display:inline;">
+              <p style="text-align:left;display:inline;"> Name: </p>
+              <p id="clientName" style="text-align:left; display:inline; font-weight:bold;"></p>
+              <br>
+            </div>
+            <div style="display:inline;">
+              <p style="text-align:left;display:inline;"> Service: </p>
+              <p id="service" style="text-align:left; display:inline; font-weight:bold;"></p>
+              <br>
+            </div>
+            <div style="display:inline;">
+              <p style="text-align:left;display:inline;"> Appointment: </p>
+              <p id="appt" style="text-align:left; display:inline; font-weight:bold;"></p>
+              <br>
+            </div>
+          </div>
+        </li>
+      </div>
+      <div class="col-3">
+
+        <img src="images/calendar.png" width="151%">
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Bootstrap CSS Style -->
+  	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+     
+	<!-- Project CSS, adapted from cinician.css -->
+	<link rel="stylesheet" href="css/profile.css">
+	
+	<!-- scripts -->
+	<script type="text/javascript" src="js/profile.js"></script>
+    <title>MCT Booking Profile</title>
+</head>
+<body>
+    
+    <nav id="top-nav-bar" class="navbar navbar-light bg-white">
+    <a class="navbar-brand" href="#">
+      <img src="images/logo.jpg" width="20%" height="20%">
+    </a>
+  </nav>
+
+  <div class="container ">
+  	<!-- HEADING ROW -->
+    <div class="col">
+      <h1 id="profileTitle">Booking Portal</h1>
+    </div>
+    
+    <div id="patient">
+    <div class="row">
+	  <!-- USER INFO -->
+      <div class="col-2 profileInfo">
+      	<div class="col">
+      		<img src="images/profile.png" width="70%" height="100%">
+      	</div>
+      	<div class="w-100"></div>
+      	<div class="col">
+      		<p id="name">Username:</p>
+      	</div>
+      	<div class="w-100"></div>
+		<div class="col">
+		  <p id="email">E-mail:</p>
+		</div>
+		<div class="w-100"></div>
+		<div class="col">
+		  <p id="phone">Phone:</p>
+		</div>
+		
+		<div class="col">
+		<!-- button to edit profile, popup/page contents altered to form on click -->
+			<button onclick="editProfile()">Edit Profile</button>
+		</div>
+      </div>
+      
+      <!-- USER APPOINTMENTS -->
+      <div class="col-6 mr-2" style="background-color:#E0AF27; padding:5px;">
+        <div class="col titles">
+        <!-- add a switch here between scheduled appointments & previous-->
+		<!-- <label class="switch">
+		  <input type="checkbox">
+		  <span class="slider"></span>
+		</label> -->
+        
+          Scheduled Appointments
+        </div>
+        <ul>
+        <!-- dynamically add each li for appointments -->
+        <!-- make a scrollable list -->
+	        <li class="appointment" >
+	          <div>
+	            <div style="display:inline;">
+	              <p style="text-align:left;display:inline;"> Name: Child A</p>
+	              <p id="clientName" style="text-align:left; display:inline; font-weight:bold;"></p>
+	              <br>
+	            </div>
+	            <div style="display:inline;">
+	              <p style="text-align:left;display:inline;"> Service: Initial Consultation </p>
+	              <p id="service" style="text-align:left; display:inline; font-weight:bold;"></p>
+	              <br>
+	            </div>
+	             <div style="display:inline;">
+	              <p style="text-align:left;display:inline;"> Clinician: Jane Doe</p>
+	              <p id="service" style="text-align:left; display:inline; font-weight:bold;"></p>
+	              <br>
+	            </div>
+	            <div style="display:inline;">
+	              <p style="text-align:left;display:inline;"> Appointment: 3/2/21 </p>
+	              <p id="appt" style="text-align:left; display:inline; font-weight:bold;"></p>
+	              <br>
+	            </div>
+	          </div>
+	        </li>
+	        <li class="appointment" >
+	          <div>
+	            <div style="display:inline;">
+	              <p style="text-align:left;display:inline;"> Name: Child B</p>
+	              <p id="clientName" style="text-align:left; display:inline; font-weight:bold;"></p>
+	              <br>
+	            </div>
+	            <div style="display:inline;">
+	              <p style="text-align:left;display:inline;"> Service: Initial Consultation </p>
+	              <p id="service" style="text-align:left; display:inline; font-weight:bold;"></p>
+	              <br>
+	            </div>
+	             <div style="display:inline;">
+	              <p style="text-align:left;display:inline;"> Clinician: John Smith</p>
+	              <p id="service" style="text-align:left; display:inline; font-weight:bold;"></p>
+	              <br>
+	            </div>
+	            <div style="display:inline;">
+	              <p style="text-align:left;display:inline;"> Appointment: 3/3/21</p>
+	              <p id="appt" style="text-align:left; display:inline; font-weight:bold;"></p>
+	              <br>
+	            </div>
+	          </div>
+	        </li>
+        </ul>
+      </div>
+      
+      <!-- CLINICIAN CALENDAR/PATIENT OPTIONS -->
+      <div class="col-3 ml-2" style="background-color:#E0AF27; padding:5px;">
+      <!-- book new appointment -->
+      <!-- patient dropdown/selection/add button -->
+        <!-- <div class="col titles">
+          Patients
+        </div> -->
+        <div class="col-12 titles">Your Patients</div>
+        <div class="col-12">
+        	
+        	<!-- dynamically populate with the patients attached to acct -->
+        	<form >
+        		<select id="patientSelect"name="patients" multiple>
+        			<option>Child A</option>
+        			<option>Child B</option>
+      
+        		</select>
+        		<button>+ Add A Patient</button>
+        	</form>
+        </div>
+                		
+      	
+        <div class="col" id="bookNew" onclick="booking.html">
+        	<button>Book New Appointment</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- SYDNEY'S CLINICIAN PORTAL CODE -->
+  <div id="clinician" style="display:none;">
+   <!--  <div class="row" >
+      <div class="col">
+        <h1 style="color: #12355B; text-align: center; font-weight: 300; margin-bottom: 30px">
+          Clinician Portal</h1>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="col-4 mr-2" style="background-color:#E0AF27;text-align: center; padding:5px;">
+        <div class="">
+          Current Appointments
+        </div>
+      </div>
+      <div class="col-4 ml-2" style="background-color:#E0AF27;text-align: center; padding:5px;">
+        <div class="">
+          Working Hours
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <img src="images/profile.png" width="70%" height="100%">
+        <div class="w-100"></div>
+      </div>
+      <div class="col-4 mr-2" style="background-color:#ebebeb">
+        <li id="NAME" class="d-flex">
+          <div>
+            <div style="display:inline;">
+              <p style="text-align:left;display:inline;"> Name: </p>
+              <p id="clientName" style="text-align:left; display:inline; font-weight:bold;"></p>
+              <br>
+            </div>
+            <div style="display:inline;">
+              <p style="text-align:left;display:inline;"> Service: </p>
+              <p id="service" style="text-align:left; display:inline; font-weight:bold;"></p>
+              <br>
+            </div>
+            <div style="display:inline;">
+              <p style="text-align:left;display:inline;"> Appointment: </p>
+              <p id="appt" style="text-align:left; display:inline; font-weight:bold;"></p>
+              <br>
+            </div>
+          </div>
+        </li>
+        <div class="col-4">
+
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col" style="color:#12355B;">
+        <p id="name">Name:</p>
+      </div>
+      <div class="w-100"></div>
+      <div class="col" style="color:#12355B;margin-top: -10px">
+        <p id="email">E-mail:</p>
+      </div>
+      <div class="w-100"></div>
+      <div class="col" style="color:#12355B;margin-top: -10px;">
+        <p id="phone">Phone:</p>
+      </div>
+    </div>
+    </div>
+    
+    <div id="editProfile" style="display:none;">
+	  	<h2 class="editForm">Edit Profile</h2>
+	  	<!-- form with: image upload, username change, password change -->
+	  	<!-- auto fill with current data -->
+	  	<!-- add in error messages, email confirmation, password restrictions -->
+	  	<form class="form-horizonal" role="form">
+	  		<div class="col-4 editForm">
+		  		<img src="images/profile.png" >
+		  		<p>Upload a new photo...</p>
+		  		<input type="file">
+	  		</div> 
+	          <div class="form-group">
+	            <label class="col-lg-3 control-label">Username:</label>
+	            <div class="col-lg-12">
+	              <input class="form-control" type="text" value="Jane">
+	            </div>
+	          </div>
+	          <div class="form-group">
+	            <label class="col-lg-3 control-label">Email:</label>
+	            <div class="col-lg-12">
+	              <input class="form-control" type="text" value="janesemail@gmail.com">
+	            </div>
+	          </div>
+	          <div class="form-group">
+	            <label class="col-md-3 control-label">Password:</label>
+	            <div class="col-md-12">
+	              <input class="form-control" type="password" value="11111122333">
+	            </div>
+	          </div>
+	          <div class="form-group">
+	            <label class="col-md-3 control-label">Confirm password:</label>
+	            <div class="col-md-12">
+	              <input class="form-control" type="password" value="11111122333">
+	            </div>
+	         </div>
+	         <div class="form-group">
+	            <label class="col-md-3 control-label"></label>
+	            <div class="col-md-12">
+	              <input type="button" class="btn btn-primary" value="Save Changes">
+	              <span></span>
+	              <input type="reset" class="btn btn-default" value="Cancel">
+	            </div>
+          	</div>
+			<br><br>
+	  	</form>
+  	</div>
+  </div>
+  
+  
+  
+</body>
+</html>

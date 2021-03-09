@@ -1,0 +1,82 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  padding: 10px;
+}
+
+p {
+  color: black;
+}
+
+h2 {
+  background: #E0AF27;
+  color: #12355B;
+  width: 100%;
+  padding: 10px;
+  margin: 0px;
+}
+
+h3 {
+  color: #12355B;
+}
+
+h4 {
+  color: #12355B;
+}
+
+h5 {
+  color: #154675;
+}
+
+a {
+  color: #154675;
+}
+
+hr {
+  margin: 2rem 0 2rem 0;
+  border: 0;
+  border-top: 1px solid #154675;
+}
+
+.input-field {
+  padding-bottom: 2%;
+}
+
+.client-allergy-container {
+  margin-top: 1rem;
+}
+
+.child-allergy-container {
+  margin-top: 1rem;
+}
+
+#patient-container {
+  padding: 10px;
+}
+
+#patient-form-container {
+  background: #EBEBEB;
+  padding: 10px;
+}
+
+#parent-child-container {
+  margin-bottom: 2%;
+}
+
+#btn-add-client-allergy {
+  background-color: #E0AF27;
+  border: 0;
+  margin: 10px 0px 10px 0px;
+}
+
+#btn-add-child {
+  border: 0;
+  width: 50%;
+  margin: 10px 0px 10px 0px;
+}
+
+#btn-next {
+  background-color: #12355B;
+  border: 0;
+  width: 50%;
+  margin: 10px 0px 10px 0px;
+}
