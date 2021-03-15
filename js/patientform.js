@@ -8,13 +8,13 @@ function parentChildCheck() {
         document.getElementById('client-form-divider').style.display = 'block';
         document.getElementById('parent-container').style.display = 'block';
         document.getElementById('client-container').style.display = 'none';
-    } 
+    }
 	else if (document.getElementById('childRadio').checked) {
         // show client form
         document.getElementById('client-form-divider').style.display = 'block';
         document.getElementById('client-container').style.display = 'block';
         document.getElementById('parent-container').style.display = 'none';
-    } 
+    }
 	else {
         // hide both parent and client forms
         document.getElementById('parent-container').style.display = 'none';
@@ -28,13 +28,13 @@ function addClientAllergy() {
 	if (clientAllergyCount == 0) {
 		allergyForm.style.display = 'block';
 		clientAllergyCount++;
-	} 
+	}
 	else {
 		var parent = document.getElementById('client-allergy-container' + clientAllergyCount);
 		var clone = parent.cloneNode(true);
 		clientAllergyCount++;
 		clone.setAttribute('id', 'client-allergy-container' + clientAllergyCount);
-		clone.getElementsByTagName('h5')[0].innerHTML = "Allergy " + clientAllergyCount;	
+		clone.getElementsByTagName('h5')[0].innerHTML = "Allergy " + clientAllergyCount;
 		clone.getElementsByTagName('button')[0].id = "btn-remove-child-allergy" + clientAllergyCount;
 		parent.after(clone);
 	}
@@ -44,9 +44,9 @@ function removeClientAllergy(btnId) {
 	var id = String(btnId).split("allergy")[1];
 	var allergy = document.getElementById('client-allergy-container' + id);
 	var allergies = document.getElementsByClassName('child-container');
-	
-	clientAllergyCount--;	
-	
+
+	clientAllergyCount--;
+
 	if (allergies.length == 1) {
 		// If only one allergy left, hide it as a template for future allergies
 		allergy.style.display = 'none';
@@ -60,31 +60,31 @@ function removeClientAllergy(btnId) {
 			allergies[i].getElementsByTagName('button')[0].id = "btn-remove-child-allergy" + allergyNum;
 			allergies[i].id = 'client-allergy-container' + allergyNum;
 		}
-		
-		allergy.remove();	
+
+		allergy.remove();
 	}
 }
 
-function addChild() {	
+function addChild() {
 	var childForm = document.getElementById('child-container1');
-	
+
 	if (childCount == 0) {
 		childForm.style.display = 'block';
 		childCount++;
 		if (childrenAllergyCount.length == 0) {
 			childrenAllergyCount.push(0);
 		}
-	} 
+	}
 	else {
 		var parent = document.getElementById('child-container' + childCount);
 		var clone = parent.cloneNode(true);
 		var buttons = clone.getElementsByTagName('button');
-		childCount++;		
+		childCount++;
 		childrenAllergyCount.push(0);
 		clone.setAttribute('id', 'child-container' + childCount);
-		clone.getElementsByTagName('h3')[0].innerHTML = "Child " + childCount;	
+		clone.getElementsByTagName('h3')[0].innerHTML = "Child " + childCount;
 		clone.getElementsByClassName('child-allergies-container')[0].id = "child" + childCount + "-allergies-container";
-		clone.getElementsByClassName('child-allergy-container')[0].id = 'child' + childCount + '-allergy1-container';	
+		clone.getElementsByClassName('child-allergy-container')[0].id = 'child' + childCount + '-allergy1-container';
 		buttons[0].id = "btn-remove-child" + childCount;
 		buttons[1].id = "btn-add-child" + childCount + "-allergy";
 		buttons[2].id = "btn-remove-child" + childCount + "-allergy1";
@@ -96,10 +96,10 @@ function removeChildForm(btnId) {
 	var id = String(btnId).split("child")[1];
 	var child = document.getElementById('child-container' + id);
 	var children = document.getElementsByClassName('child-container');
-	
-	childCount--;	
+
+	childCount--;
 	childrenAllergyCount.splice(id-1, 1);
-	
+
 	if (children.length == 1) {
 		// If only one child, hide it as a template for future allergies
 		child.style.display = 'none';
@@ -116,17 +116,17 @@ function removeChildForm(btnId) {
 			children[i].getElementsByClassName('child-allergy-container')[0].id = "child" + childNum + "-allergy1-container";
 			buttons[0].id = "btn-remove-child" + childNum;
 			buttons[1].id = "btn-add-child" + childNum + "-allergy";
-			buttons[2].id = "btn-remove-child" + childNum + "-allergy1";		
+			buttons[2].id = "btn-remove-child" + childNum + "-allergy1";
 		}
-		
-		child.remove();	
+
+		child.remove();
 	}
 }
 
 function addChildAllergy(btnId) {
 	var id = String(btnId).split("child")[1].split("-allergy")[0]; // ex: "btn-add-child1-allergy"
 	var allergyForm = document.getElementById('child' + id + '-allergy1-container');
-	
+
 	if (childrenAllergyCount[id-1] == 0) {
 		allergyForm.style.display = 'block';
 		childrenAllergyCount[id-1]++;
@@ -148,9 +148,9 @@ function removeChildAllergy(btnId) {
 	var allergyId = ids[1];
 	var allergy = document.getElementById('child' + childId + '-allergy' + allergyId + '-container');
 	var allergies = document.getElementById('child' + childId + '-allergies-container').getElementsByClassName('child-allergy-container');
-	
+
 	childrenAllergyCount[childId-1]--;
-	
+
 	if (childrenAllergyCount[childId-1] == 0) {
 		// If only one allergy left, hide it as a template for future allergies
 		allergy.style.display = 'none';
@@ -164,15 +164,15 @@ function removeChildAllergy(btnId) {
 			allergies[i].getElementsByTagName('button')[0].id = "btn-remove-child" + childId + "-allergy" + allergyNum; // ex: 'btn-remove-child1-allergy1'
 			allergies[i].id = "child" + childId + "-allergy" + allergyNum + "-container";
 		}
-		
-		allergy.remove();	
+
+		allergy.remove();
 	}
 }
 
 function submitClientForm() {
-	alert("submitted client form!");
+	window.location.href = "confirm_appointment.html";
 }
 
 function submitGuardianForm() {
-	alert("submitted guardian form!");
+	window.location.href = "confirm_appointment.html";
 }
