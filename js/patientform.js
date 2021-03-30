@@ -1,3 +1,26 @@
+/*** AWS database ***/
+/*// Initialize the Amazon Cognito credentials provider
+AWS.config.region = 'us-west-1'; // Region
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: 'us-west-1:cb26517b-b52a-4de3-a9fd-d2779d356131',
+});*/
+var albumBucketName = "mctbooking-web";
+var bucketRegion = "us-west-1";
+var IdentityPoolId = "us-west-1:cb26517b-b52a-4de3-a9fd-d2779d356131";
+
+AWS.config.update({
+  region: bucketRegion,
+  credentials: new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: IdentityPoolId
+  })
+});
+
+var s3 = new AWS.S3({
+  apiVersion: "2006-03-01",
+  params: { Bucket: albumBucketName }
+});
+
+/*** Patient Intake Form ***/
 var clientAllergyCount = 0;
 var childCount = 0;
 var childrenAllergyCount = [0];
@@ -34,6 +57,7 @@ function addClientAllergy() {
 		var clone = parent.cloneNode(true);
 		clientAllergyCount++;
 		clone.setAttribute('id', 'client-allergy-container' + clientAllergyCount);
+		clone.style.display = 'block';
 		clone.getElementsByTagName('h5')[0].innerHTML = "Allergy " + clientAllergyCount;
 		clone.getElementsByTagName('button')[0].id = "btn-remove-child-allergy" + clientAllergyCount;
 		parent.after(clone);
@@ -43,11 +67,11 @@ function addClientAllergy() {
 function removeClientAllergy(btnId) {
 	var id = String(btnId).split("allergy")[1];
 	var allergy = document.getElementById('client-allergy-container' + id);
-	var allergies = document.getElementsByClassName('child-container');
+	var allergies = document.getElementsByClassName('client-allergy-container');
 
 	clientAllergyCount--;
 
-	if (allergies.length == 1) {
+	if (clientAllergyCount == 0) {
 		// If only one allergy left, hide it as a template for future allergies
 		allergy.style.display = 'none';
 	}
@@ -57,7 +81,7 @@ function removeClientAllergy(btnId) {
 			var allergyNum = parseInt(allergies[i].id.split("container")[1]);
 			allergyNum--;
 			allergies[i].getElementsByTagName('h5')[0].innerHTML = "Allergy " + allergyNum;
-			allergies[i].getElementsByTagName('button')[0].id = "btn-remove-child-allergy" + allergyNum;
+			allergies[i].getElementsByTagName('button')[0].id = "btn-remove-client-allergy" + allergyNum;
 			allergies[i].id = 'client-allergy-container' + allergyNum;
 		}
 
@@ -169,10 +193,120 @@ function removeChildAllergy(btnId) {
 	}
 }
 
+function storeData(path, data) {
+	// Store client data in AWS database
+	s3.headObject({ Key: path, Body: data }, function(err, path) {
+		if (!err) {
+			console.log(data + " already exists.");
+			return 1;
+	    }
+	    if (err.code !== "NotFound") {
+			console.log("There was an error submitting your form: " + err.message)
+	      	return 0;
+	    }
+	    s3.putObject({ Key: key }, function(err, path) {
+			if (err) {
+		        console.log("There was an error submitting your form: " + err.message)
+		      	return 0;
+			}
+			return 1;
+	    });
+	});
+}
+
 function submitClientForm() {
-	window.location.href = "confirm_appointment.html";
+	var clientDataMap = new Map();
+	
+	// Parse client data
+	try {
+		var clientForm = document.getElementById('client-form').value;
+		var email = clientForm.getElementById('inputEmail').value;
+		/*var firstName = clientForm.getElementById('inputFirstName').value;
+		var lastName = clientForm.getElementById('inputLastName').value;
+		var phone = clientForm.getElementById('inputPhone').value;
+		var dob = clientForm.getElementById('inputDateOfBirth').value;*/
+		
+		// Place client data in data structure
+		let clientData = {
+			firstName: clientForm.getElementById('inputFirstName').value,
+			lastName: clientForm.getElementById('inputLastName').value,
+			phone: clientForm.getElementById('inputPhone').value,
+			dateOfBirth: clientForm.getElementById('inputDateOfBirth').value,
+		};
+		
+		/*clientDataMap.set('firstName', clientForm.getElementById('inputFirstName').value);
+		clientDataMap.set('lastName', clientForm.getElementById('inputLastName').value);
+		clientDataMap.set('phone', clientForm.getElementById('inputPhone').value);
+		clientDataMap.set('dateOfBirth', clientForm.getElementById('inputDateOfBirth').value);*/
+		
+		// Store email in AWS database first to identify unique account
+		if (!storeClientData("clients/" + email, email)) {
+			document.getElementById('client-error-message').style.display = 'block';
+			return;
+		}
+		
+		// Store client data in AWS database
+		for (let key in clientData) {
+			if (!storeClientData("clients/" + email + "/" + key, clientData[key])) {
+				document.getElementById('client-error-message').style.display = 'block';
+				return;
+			}	
+		}
+		/*for (var i=0; i<clientDataArray.length; i++) {
+			if (!storeClientData("clients/" + email + "/" + clientDataArray[i], clientDataArray[i])) {
+				document.getElementById('client-error-message').style.display = 'block';
+				return;
+			}	
+		}*/
+		
+		// Webpage redirects after 3 seconds
+		alert("Thank you for submitting your form! You will be redirected back to the home page in a moment.");
+		setTimeout(function() {
+            window.location.href = 'https://www.tutorialspoint.com/javascript/';
+    	}, 3000);
+	} catch (err) {
+		console.log(err);
+		
+	}
+	//window.location.href = "confirm_appointment.html";
 }
 
 function submitGuardianForm() {
-	window.location.href = "confirm_appointment.html";
+	var guardianDataArray = [];
+	
+	try {
+		var guardianForm = document.getElementById('parent-form').value;
+		var firstName = guardianForm.getElementById('guardianFirstName').value;
+		var lastName = guardianForm.getElementById('guardianLastName').value;
+		var phone = guardianForm.getElementById('guardianPhone').value;
+		var email = guardianForm.getElementById('guardianEmail').value;
+		
+		// Place guardian data in array
+		guardianDataArray.push(firstName);
+		guardianDataArray.push(lastName);
+		guardianDataArray.push(phone);
+		
+		// Store email in AWS database first to identify unique account
+		if (!storeClientData(email)) {
+			document.getElementById('parent-error-message').style.display = 'block';
+			return;
+		}
+		
+		// Store client data in AWS database
+		for (var i=0; i<guardianDataArray.length; i++) {
+			if (!storeData(data)) {
+				document.getElementById('parent-error-message').style.display = 'block';
+				return;
+			}	
+		}
+		
+		// Webpage redirects after 3 seconds
+		alert("Thank you for submitting your form! You will be redirected back to the home page in a moment.");
+		setTimeout(function() {
+	            window.location.href = 'https://www.tutorialspoint.com/javascript/';
+	    }, 3000);
+	} catch (err) {
+		console.log(err);
+	}
+	//window.location.href = "confirm_appointment.html";
 }
