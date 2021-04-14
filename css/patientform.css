@@ -49,6 +49,11 @@ hr {
   margin-top: 1rem;
 }
 
+.form-error-mssg {
+  display: none;
+  color: red;
+}
+
 #patient-container {
   padding: 10px;
 }
@@ -74,7 +79,7 @@ hr {
   margin: 10px 0px 10px 0px;
 }
 
-#btn-next {
+#btn-submit {
   background-color: #12355B;
   border: 0;
   width: 50%;

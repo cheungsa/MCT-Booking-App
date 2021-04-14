@@ -10,12 +10,13 @@
   <link rel="stylesheet" href="css/patientform.css">
   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.874.0.min.js"></script>
   <script src="js/patientform.js" charset="utf-8"></script>
   <title>MCT Booking Portal</title>
 </head>
 <body>
   <nav id="top-nav-bar" class="navbar navbar-light bg-white">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="https://mountaincounseling262527115.wpcomstaging.com">
       <img src="images/logo.jpg" width="12%" height="12%">
     </a>
   </nav>
@@ -39,35 +40,52 @@
         </div>
       </div>
 
-      <hr id="client-form-divider" style="display:none"></hr>
+      <hr id="client-form-divider" style="display:none;"></hr>
 
-      <div id="client-container" style="display:none">
+      <div id="client-container" style="display:none;">
         <h3>Client Form</h3>
-        <em>
+        
+        <p>
         Mountain Counseling & Training provides services to only clients with IEHP or Medicaid. 
         If you do not have either insurance, please contact us at (909) 336-3330.
-        </em>
+        </p>
+        <p></p>
+        <em>Required field (<span style="color:red">*</span>)</em>
+        
+        <b id="client-error-message" class="form-error-mssg" style="display:none;">There was an error processing your form.</b>
         <form id="client-form" style="margin-top:1rem;">
           <div class="form-row">
             <div class="form-group col-md-6" style="padding-right:2%;">
+              <div class="form-row">
+	              <div class="col input-field">
+	                <label for="clientFirstName">First Name <span style="color:red">*</span></label>
+	                <input type="text" class="form-control" id="clientFirstName" placeholder="First name" required=required>
+	              </div>
+	
+	              <div class="col input-field">
+	                <label for="clientLastName">Last Name <span style="color:red">*</span></label>
+	                <input type="text" class="form-control" id="clientLastName" placeholder="Last name" required=required>
+	              </div>
+              </div>
+              
               <div class="input-field">
-                <label for="inputFirstName">First Name</label>
-                <input type="text" class="form-control" id="inputFirstName" placeholder="First name" required=true>
+                <label for="clientPhone">Phone Number <span style="color:red">*</span></label>
+                <input type="tel" class="form-control" id="clientPhone" placeholder="Phone number" required=required>
               </div>
 
               <div class="input-field">
-                <label for="inputLastName">Last Name</label>
-                <input type="text" class="form-control" id="inputLastName" placeholder="Last name" required=true>
+                <label for="clientEmail">Email Address <span style="color:red">*</span></label>
+                <input type="email" class="form-control" id="clientEmail" placeholder="Email address" required=required>
               </div>
 
               <div class="input-field">
-                <label for="inputDateOfBirth">Date of Birth</label>
-                <input type="date" class="form-control" id="inputDateOfBirth" required=true>
+                <label for="clientDateOfBirth">Date of Birth <span style="color:red">*</span></label>
+                <input type="date" class="form-control" id="clientDateOfBirth" required=required>
               </div>
 
               <div class="input-field">
-                <label for="inputGender">Gender</label>
-                <select id="inputGender" class="form-control" required=true>
+                <label for="clientGender">Gender <span style="color:red">*</span></label>
+                <select id="clientGender" class="form-control" required=required>
                   <option value="" selected>Select one</option>
                   <option>Female</option>
                   <option>Male</option>
@@ -77,13 +95,13 @@
               </div>
 
               <div class="input-field">
-                <label for="inputGenderOther">If other, please specify:</label>
-                <input type="text" class="form-control" id="inputGenderOther">
+                <label for="clientGenderOther">If you selected Other for gender, please specify:</label>
+                <input type="text" class="form-control" id="clientGenderOther">
               </div>
 
               <div class="input-field">
-                <label for="inputPreferredLanguage">Preferred Language</label>
-                <select id="inputPreferredLanguage" class="form-control" required=true>
+                <label for="clientPreferredLanguage">Preferred Language <span style="color:red">*</span></label>
+                <select id="clientPreferredLanguage" class="form-control" required=required>
                   <option value="" selected>Select one</option>
                   <option>English</option>
                   <option>Spanish</option>
@@ -92,13 +110,13 @@
               </div>
 
               <div class="input-field">
-                <label for="inputPreferredLanguageOther">If other, please specify:</label>
-                <input type="text" class="form-control" id="inputPreferredLanguageOther">
+                <label for="clientPreferredLanguageOther">If you selected Other for preferred language, please specify:</label>
+                <input type="text" class="form-control" id="clientPreferredLanguageOther">
               </div>
 
               <div class="input-field">
-                <label for="inputEthnicity">Ethnicity</label>
-                <select id="inputEthnicity" class="form-control" required=true>
+                <label for="clientEthnicity">Ethnicity <span style="color:red">*</span></label>
+                <select id="clientEthnicity" class="form-control" required=required>
                   <option value="" selected>Select one</option>
                   <option>American Indian or Alaska Native</option>
                   <option>Asian</option>
@@ -111,223 +129,232 @@
 
               <div class="input-field">
                 <div class="input-physical-address">
-                  <label for="inputPhysicalAddress">Physical Address</label>
-                  <input type="text" class="form-control" id="inputPhysicalAddress" style="margin-bottom:4px;" placeholder="Street address" required=true>
-                  <input type="text" class="form-control" id="inputPhysicalAddress2" style="margin-bottom:4px;" placeholder="Apartment number, unit, floor, etc.">
-                  <select id="inputPhysicalAddressState" class="form-control" style="margin-bottom:4px;" required=true>
-                    <option value="" selected>State</option>
-            		<option value="AL">Alabama</option>
-            		<option value="AK">Alaska</option>
-            		<option value="AZ">Arizona</option>
-            		<option value="AR">Arkansas</option>
-           			<option value="CA">California</option>
-           			<option value="CO">Colorado</option>
-           			<option value="CT">Connecticut</option>
-           			<option value="DE">Delaware</option>
-           			<option value="DC">District Of Columbia</option>
-           			<option value="FL">Florida</option>
-           			<option value="GA">Georgia</option>
-           			<option value="HI">Hawaii</option>
-           			<option value="ID">Idaho</option>
-           			<option value="IL">Illinois</option>
-           			<option value="IN">Indiana</option>
-           			<option value="IA">Iowa</option>
-            		<option value="KS">Kansas</option>
-            		<option value="KY">Kentucky</option>
-            		<option value="LA">Louisiana</option>
-           			<option value="ME">Maine</option>
-           			<option value="MD">Maryland</option>
-           			<option value="MA">Massachusetts</option>
-           			<option value="MI">Michigan</option>
-           			<option value="MN">Minnesota</option>
-           			<option value="MS">Mississippi</option>
-           			<option value="MO">Missouri</option>
-           			<option value="MT">Montana</option>
-           			<option value="NE">Nebraska</option>
-           			<option value="NV">Nevada</option>
-           			<option value="NH">New Hampshire</option>
-            		<option value="NJ">New Jersey</option>
-            		<option value="NM">New Mexico</option>
-            		<option value="NY">New York</option>
-           			<option value="NC">North Carolina</option>
-           			<option value="ND">North Dakota</option>
-           			<option value="OH">Ohio</option>
-           			<option value="OK">Oklahoma</option>
-           			<option value="OR">Oregon</option>
-           			<option value="PA">Pennsylvania</option>
-           			<option value="RI">Rhode Island</option>
-           			<option value="SC">South Carolina</option>
-           			<option value="SD">South Dakota</option>
-           			<option value="TN">Tennessee</option>
-           			<option value="TX">Texas</option>
-           			<option value="UT">Utah</option>
-            		<option value="VT">Vermont</option>
-            		<option value="VA">Virginia</option>
-            		<option value="WA">Washington</option>
-           			<option value="WV">West Virginia</option>
-           			<option value="WI">Wisconsin</option>
-           			<option value="WY">Wyoming</option>
-             	  </select>
-             	  
-                  <input type="text" class="form-control" id="inputPhysicalAddressZipCode" style="margin-bottom:4px;" placeholder="Zip Code" required=true>
+                  <label for="clientPhysicalAddress">Physical Address <span style="color:red">*</span></label>
+                  <input type="text" class="form-control" id="clientPhysicalAddress" style="margin-bottom:4px;" placeholder="Street address" required=required>
+                  <input type="text" class="form-control" id="clientPhysicalAddress2" style="margin-bottom:4px;" placeholder="Apartment number, unit, floor, etc.">
+                  <div class="form-row">
+	                  <select id="clientPhysicalAddressState" class="col form-control" style="margin-bottom:4px; margin-left: 1%; margin-right: 1%;">
+	                    <option value="" selected>State</option>
+	            		<option value="AL">Alabama</option>
+	            		<option value="AK">Alaska</option>
+	            		<option value="AZ">Arizona</option>
+	            		<option value="AR">Arkansas</option>
+	           			<option value="CA">California</option>
+	           			<option value="CO">Colorado</option>
+	           			<option value="CT">Connecticut</option>
+	           			<option value="DE">Delaware</option>
+	           			<option value="DC">District Of Columbia</option>
+	           			<option value="FL">Florida</option>
+	           			<option value="GA">Georgia</option>
+	           			<option value="HI">Hawaii</option>
+	           			<option value="ID">Idaho</option>
+	           			<option value="IL">Illinois</option>
+	           			<option value="IN">Indiana</option>
+	           			<option value="IA">Iowa</option>
+	            		<option value="KS">Kansas</option>
+	            		<option value="KY">Kentucky</option>
+	            		<option value="LA">Louisiana</option>
+	           			<option value="ME">Maine</option>
+	           			<option value="MD">Maryland</option>
+	           			<option value="MA">Massachusetts</option>
+	           			<option value="MI">Michigan</option>
+	           			<option value="MN">Minnesota</option>
+	           			<option value="MS">Mississippi</option>
+	           			<option value="MO">Missouri</option>
+	           			<option value="MT">Montana</option>
+	           			<option value="NE">Nebraska</option>
+	           			<option value="NV">Nevada</option>
+	           			<option value="NH">New Hampshire</option>
+	            		<option value="NJ">New Jersey</option>
+	            		<option value="NM">New Mexico</option>
+	            		<option value="NY">New York</option>
+	           			<option value="NC">North Carolina</option>
+	           			<option value="ND">North Dakota</option>
+	           			<option value="OH">Ohio</option>
+	           			<option value="OK">Oklahoma</option>
+	           			<option value="OR">Oregon</option>
+	           			<option value="PA">Pennsylvania</option>
+	           			<option value="RI">Rhode Island</option>
+	           			<option value="SC">South Carolina</option>
+	           			<option value="SD">South Dakota</option>
+	           			<option value="TN">Tennessee</option>
+	           			<option value="TX">Texas</option>
+	           			<option value="UT">Utah</option>
+	            		<option value="VT">Vermont</option>
+	            		<option value="VA">Virginia</option>
+	            		<option value="WA">Washington</option>
+	           			<option value="WV">West Virginia</option>
+	           			<option value="WI">Wisconsin</option>
+	           			<option value="WY">Wyoming</option>
+	             	  </select>
+	             	  
+	                  <input type="text" class="col form-control" id="clientPhysicalAddressZipCode" style="margin-bottom:4px; margin-left: 1%; margin-right: 1%;" placeholder="Zip Code" required=required>
+                  </div>
                 </div>
               </div>
 
               <div class="input-field">
                 <div class="input-mailing-address">
-                  <label for="inputMailingAddress">Mailing Address</label>
-                  <input type="text" class="form-control" id="inputMailingAddress" style="margin-bottom:4px;" placeholder="Street address" required=true>
-                  <input type="text" class="form-control" id="inputMailingAddress2" style="margin-bottom:4px;" placeholder="Apartment number, unit, floor, etc.">
-                  <select id="inputMailingAddressState" class="form-control" style="margin-bottom:4px;" required=true>
-                    <option value="state">State</option>
-              			<option value="AL">Alabama</option>
-              			<option value="AK">Alaska</option>
-              			<option value="AZ">Arizona</option>
-              			<option value="AR">Arkansas</option>
-              			<option value="CA">California</option>
-              			<option value="CO">Colorado</option>
-              			<option value="CT">Connecticut</option>
-              			<option value="DE">Delaware</option>
-              			<option value="DC">District Of Columbia</option>
-              			<option value="FL">Florida</option>
-              			<option value="GA">Georgia</option>
-              			<option value="HI">Hawaii</option>
-              			<option value="ID">Idaho</option>
-              			<option value="IL">Illinois</option>
-              			<option value="IN">Indiana</option>
-              			<option value="IA">Iowa</option>
-              			<option value="KS">Kansas</option>
-              			<option value="KY">Kentucky</option>
-              			<option value="LA">Louisiana</option>
-              			<option value="ME">Maine</option>
-              			<option value="MD">Maryland</option>
-              			<option value="MA">Massachusetts</option>
-              			<option value="MI">Michigan</option>
-              			<option value="MN">Minnesota</option>
-              			<option value="MS">Mississippi</option>
-              			<option value="MO">Missouri</option>
-              			<option value="MT">Montana</option>
-              			<option value="NE">Nebraska</option>
-              			<option value="NV">Nevada</option>
-              			<option value="NH">New Hampshire</option>
-              			<option value="NJ">New Jersey</option>
-              			<option value="NM">New Mexico</option>
-              			<option value="NY">New York</option>
-              			<option value="NC">North Carolina</option>
-              			<option value="ND">North Dakota</option>
-              			<option value="OH">Ohio</option>
-              			<option value="OK">Oklahoma</option>
-              			<option value="OR">Oregon</option>
-              			<option value="PA">Pennsylvania</option>
-              			<option value="RI">Rhode Island</option>
-              			<option value="SC">South Carolina</option>
-              			<option value="SD">South Dakota</option>
-              			<option value="TN">Tennessee</option>
-              			<option value="TX">Texas</option>
-              			<option value="UT">Utah</option>
-              			<option value="VT">Vermont</option>
-              			<option value="VA">Virginia</option>
-              			<option value="WA">Washington</option>
-              			<option value="WV">West Virginia</option>
-              			<option value="WI">Wisconsin</option>
-              			<option value="WY">Wyoming</option>
-              		</select>
-                  <input type="text" class="form-control" id="inputMailingAddressZipCode" style="margin-bottom:4px;" placeholder="Zip Code" required=true>
+                  <label for="clientMailingAddress">Mailing Address <span style="color:red">*</span></label>
+                  <input type="text" class="form-control" id="clientMailingAddress" style="margin-bottom:4px;" placeholder="Street address" required=required>
+                  <input type="text" class="form-control" id="clientMailingAddress2" style="margin-bottom:4px;" placeholder="Apartment number, unit, floor, etc.">
+                  <div class="form-row">
+	                  <select id="clientMailingAddressState" class="col form-control" style="margin-bottom:4px; margin-left: 1%; margin-right: 1%;" required=required>
+	                    <option value="" selected>State</option>
+	              			<option value="AL">Alabama</option>
+	              			<option value="AK">Alaska</option>
+	              			<option value="AZ">Arizona</option>
+	              			<option value="AR">Arkansas</option>
+	              			<option value="CA">California</option>
+	              			<option value="CO">Colorado</option>
+	              			<option value="CT">Connecticut</option>
+	              			<option value="DE">Delaware</option>
+	              			<option value="DC">District Of Columbia</option>
+	              			<option value="FL">Florida</option>
+	              			<option value="GA">Georgia</option>
+	              			<option value="HI">Hawaii</option>
+	              			<option value="ID">Idaho</option>
+	              			<option value="IL">Illinois</option>
+	              			<option value="IN">Indiana</option>
+	              			<option value="IA">Iowa</option>
+	              			<option value="KS">Kansas</option>
+	              			<option value="KY">Kentucky</option>
+	              			<option value="LA">Louisiana</option>
+	              			<option value="ME">Maine</option>
+	              			<option value="MD">Maryland</option>
+	              			<option value="MA">Massachusetts</option>
+	              			<option value="MI">Michigan</option>
+	              			<option value="MN">Minnesota</option>
+	              			<option value="MS">Mississippi</option>
+	              			<option value="MO">Missouri</option>
+	              			<option value="MT">Montana</option>
+	              			<option value="NE">Nebraska</option>
+	              			<option value="NV">Nevada</option>
+	              			<option value="NH">New Hampshire</option>
+	              			<option value="NJ">New Jersey</option>
+	              			<option value="NM">New Mexico</option>
+	              			<option value="NY">New York</option>
+	              			<option value="NC">North Carolina</option>
+	              			<option value="ND">North Dakota</option>
+	              			<option value="OH">Ohio</option>
+	              			<option value="OK">Oklahoma</option>
+	              			<option value="OR">Oregon</option>
+	              			<option value="PA">Pennsylvania</option>
+	              			<option value="RI">Rhode Island</option>
+	              			<option value="SC">South Carolina</option>
+	              			<option value="SD">South Dakota</option>
+	              			<option value="TN">Tennessee</option>
+	              			<option value="TX">Texas</option>
+	              			<option value="UT">Utah</option>
+	              			<option value="VT">Vermont</option>
+	              			<option value="VA">Virginia</option>
+	              			<option value="WA">Washington</option>
+	              			<option value="WV">West Virginia</option>
+	              			<option value="WI">Wisconsin</option>
+	              			<option value="WY">Wyoming</option>
+	              		</select>
+	              		
+	                  <input type="text" class="col form-control" id="clientMailingAddressZipCode" style="margin-bottom:4px; margin-left: 1%; margin-right: 1%;" placeholder="Zip Code" required=required>
+                	</div>
                 </div>
               </div>
             </div>
 
             <div class="form-group col-md-6" style="padding-left:2%;">
-              <div class="input-field">
-                <label for="inputInsuranceType">Insurance Type</label>
-                <select id="inputInsuranceType" class="form-control" required=true>
-                  <option value="" selected>Select one</option>
-                  <option>IEHP</option>
-                  <option>Medicaid</option>
-                </select>
-              </div>
-
-              <div class="input-field">
-                <label for="inputInsuranceNumber">Insurance Number</label>
-                <input type="text" class="form-control" id="inputInsuranceNumber" placeholder="Insurance number" required=true>
-              </div>
-
-              <div class="input-field">
-                <label for="inputBirthCounty">County of Birth</label>
-                <input type="text" class="form-control" id="inputBirthCounty" placeholder="County" required=true>
-              </div>
-
-              <div class="input-field">
-                <label for="inputBirthState">State of Birth</label>
-                <select id="inputBirthState" class="form-control" style="margin-bottom:4px;" required=true>
-	                  <option value="" selected>State</option>
-	                  <option value="AL">Alabama</option>
-	                  <option value="AK">Alaska</option>
-	                  <option value="AZ">Arizona</option>
-	                  <option value="AR">Arkansas</option>
-	                  <option value="CA">California</option>
-	                  <option value="CO">Colorado</option>
-	                  <option value="CT">Connecticut</option>
-	                  <option value="DE">Delaware</option>
-	                  <option value="DC">District Of Columbia</option>
-	                  <option value="FL">Florida</option>
-	                  <option value="GA">Georgia</option>
-	                  <option value="HI">Hawaii</option>
-	                  <option value="ID">Idaho</option>
-	                  <option value="IL">Illinois</option>
-	                  <option value="IN">Indiana</option>
-	                  <option value="IA">Iowa</option>
-	                  <option value="KS">Kansas</option>
-	                  <option value="KY">Kentucky</option>
-	                  <option value="LA">Louisiana</option>
-	                  <option value="ME">Maine</option>
-	                  <option value="MD">Maryland</option>
-	                  <option value="MA">Massachusetts</option>
-	                  <option value="MI">Michigan</option>
-	                  <option value="MN">Minnesota</option>
-	                  <option value="MS">Mississippi</option>
-	                  <option value="MO">Missouri</option>
-	                  <option value="MT">Montana</option>
-	                  <option value="NE">Nebraska</option>
-	                  <option value="NV">Nevada</option>
-	                  <option value="NH">New Hampshire</option>
-	                  <option value="NJ">New Jersey</option>
-	                  <option value="NM">New Mexico</option>
-	                  <option value="NY">New York</option>
-	                  <option value="NC">North Carolina</option>
-	                  <option value="ND">North Dakota</option>
-	                  <option value="OH">Ohio</option>
-	                  <option value="OK">Oklahoma</option>
-	                  <option value="OR">Oregon</option>
-	                  <option value="PA">Pennsylvania</option>
-	                  <option value="RI">Rhode Island</option>
-	                  <option value="SC">South Carolina</option>
-	                  <option value="SD">South Dakota</option>
-	                  <option value="TN">Tennessee</option>
-	                  <option value="TX">Texas</option>
-	                  <option value="UT">Utah</option>
-	                  <option value="VT">Vermont</option>
-	                  <option value="VA">Virginia</option>
-	                  <option value="WA">Washington</option>
-	                  <option value="WV">West Virginia</option>
-	                  <option value="WI">Wisconsin</option>
-	                  <option value="WY">Wyoming</option>
+              <div class="form-row">
+			  	<div class="col-4 input-field">
+	                <label for="clientInsuranceType">Insurance Type <span style="color:red">*</span></label>
+	                <select id="clientInsuranceType" class="form-control" required=required>
+	                  <option value="" selected>Select one</option>
+	                  <option>IEHP</option>
+	                  <option>Medicaid</option>
 	                </select>
+	              </div>
+	
+	              <div class="col input-field">
+	                <label for="clientInsuranceNumber">Insurance Number <span style="color:red">*</span></label>
+	                <input type="text" class="form-control" id="clientInsuranceNumber" placeholder="Insurance number" required=required>
+	              </div>
+              </div>
+              
+              <div class="form-row">
+	              <div class="col input-field">
+	                <label for="clientBirthCounty">County of Birth <span style="color:red">*</span></label>
+	                <input type="text" class="form-control" id="clientBirthCounty" placeholder="County" required=required>
+	              </div>
+	
+	              <div class="col input-field">
+	                <label for="clientBirthState">State of Birth <span style="color:red">*</span></label>
+	                <select id="clientBirthState" class="form-control" style="margin-bottom:4px;" required=required>
+		                  <option value="" selected>State</option>
+		                  <option value="AL">Alabama</option>
+		                  <option value="AK">Alaska</option>
+		                  <option value="AZ">Arizona</option>
+		                  <option value="AR">Arkansas</option>
+		                  <option value="CA">California</option>
+		                  <option value="CO">Colorado</option>
+		                  <option value="CT">Connecticut</option>
+		                  <option value="DE">Delaware</option>
+		                  <option value="DC">District Of Columbia</option>
+		                  <option value="FL">Florida</option>
+		                  <option value="GA">Georgia</option>
+		                  <option value="HI">Hawaii</option>
+		                  <option value="ID">Idaho</option>
+		                  <option value="IL">Illinois</option>
+		                  <option value="IN">Indiana</option>
+		                  <option value="IA">Iowa</option>
+		                  <option value="KS">Kansas</option>
+		                  <option value="KY">Kentucky</option>
+		                  <option value="LA">Louisiana</option>
+		                  <option value="ME">Maine</option>
+		                  <option value="MD">Maryland</option>
+		                  <option value="MA">Massachusetts</option>
+		                  <option value="MI">Michigan</option>
+		                  <option value="MN">Minnesota</option>
+		                  <option value="MS">Mississippi</option>
+		                  <option value="MO">Missouri</option>
+		                  <option value="MT">Montana</option>
+		                  <option value="NE">Nebraska</option>
+		                  <option value="NV">Nevada</option>
+		                  <option value="NH">New Hampshire</option>
+		                  <option value="NJ">New Jersey</option>
+		                  <option value="NM">New Mexico</option>
+		                  <option value="NY">New York</option>
+		                  <option value="NC">North Carolina</option>
+		                  <option value="ND">North Dakota</option>
+		                  <option value="OH">Ohio</option>
+		                  <option value="OK">Oklahoma</option>
+		                  <option value="OR">Oregon</option>
+		                  <option value="PA">Pennsylvania</option>
+		                  <option value="RI">Rhode Island</option>
+		                  <option value="SC">South Carolina</option>
+		                  <option value="SD">South Dakota</option>
+		                  <option value="TN">Tennessee</option>
+		                  <option value="TX">Texas</option>
+		                  <option value="UT">Utah</option>
+		                  <option value="VT">Vermont</option>
+		                  <option value="VA">Virginia</option>
+		                  <option value="WA">Washington</option>
+		                  <option value="WV">West Virginia</option>
+		                  <option value="WI">Wisconsin</option>
+		                  <option value="WY">Wyoming</option>
+		                </select>
+              	</div>
               </div>
 
               <div class="input-field">
-                <label for="inputSchoolAttending">School Attending</label>
-                <input type="text" class="form-control" id="inputSchoolAttending" placeholder="School" required=true>
+                <label for="clientSchoolAttending">School Attending <span style="color:red">*</span></label>
+                <input type="text" class="form-control" id="clientSchoolAttending" placeholder="School" required=required>
               </div>
 
               <div class="input-field">
-                <label for="inputGradeLevel">Last Completed Grade Level</label>
-                <input type="text" class="form-control" id="inputGradeLevel" placeholder="Grade Level" required=true>
+                <label for="clientGradeLevel">Last Completed Grade Level <span style="color:red">*</span></label>
+                <input type="text" class="form-control" id="clientGradeLevel" placeholder="Grade Level" required=required>
               </div>
 
               <div class="input-field">
-                <label for="inputEmploymentStatus">Employment Status</label>
-                <select id="inputEmploymentStatus" class="form-control" required=true>
+                <label for="clientEmploymentStatus">Employment Status <span style="color:red">*</span></label>
+                <select id="clientEmploymentStatus" class="form-control" required=required>
                   <option value="" selected>Select one</option>
                   <option>Student</option>
                   <option>Unemployed</option>
@@ -336,13 +363,13 @@
               </div>
 
               <div class="input-field">
-                <label for="inputEmploymentStatusOther">If other, please specify:</label>
-                <input type="text" class="form-control" id="inputEmploymentStatusOther">
+                <label for="clientEmploymentStatusOther">If you selected Other for employment status, please specify:</label>
+                <input type="text" class="form-control" id="clientEmploymentStatusOther">
               </div>
 
               <div class="input-field">
-                <label for="inputMaritalStatus">Marital Status</label>
-                <select id="inputMaritalStatus" class="form-control" required=true>
+                <label for="clientMaritalStatus">Marital Status <span style="color:red">*</span></label>
+                <select id="clientMaritalStatus" class="form-control" required=required>
                   <option value="" selected>Select one</option>
                   <option>Married</option>
                   <option>Never Married</option>
@@ -353,8 +380,8 @@
               </div>
 
               <div class="input-field">
-                <label for="inputLivingArrangement">Living Arrangement</label>
-                <select id="inputLivingArrangement" class="form-control" required=true>
+                <label for="clientLivingArrangement">Living Arrangement <span style="color:red">*</span></label>
+                <select id="clientLivingArrangement" class="form-control" required=required>
                   <option value="" selected>Select one</option>
                   <option>Family</option>
                   <option>Extended Family</option>
@@ -368,18 +395,18 @@
               </div>
 
               <div class="input-field">
-                <label for="inputLivingArrangementOther">If other, please specify:</label>
-                <input type="text" class="form-control" id="inputLivingArrangementOther">
+                <label for="clientLivingArrangementOther">If you selected Other for living arrangement, please specify:</label>
+                <input type="text" class="form-control" id="clientLivingArrangementOther">
               </div>
 
               <div class="input-field">
-                <label for="inputDependentsOver18">How many dependents over 18 does the client have?</label>
-                <input type="number" class="form-control" id="inputDependentsOver18" placeholder="If none, please put 0" required=true>
+                <label for="clientDependentsOver18">How many dependents over 18 does the client have? <span style="color:red">*</span></label>
+                <input type="number" class="form-control" id="clientDependentsOver18" placeholder="If none, please put 0" required=required>
               </div>
 
               <div class="input-field">
-                <label for="inputDependentsUnder18">How many dependents under 18 does the client have?</label>
-                <input type="number" class="form-control" id="inputDependentsUnder18" placeholder="If none, please put 0" required=true>
+                <label for="clientDependentsUnder18">How many dependents under 18 does the client have? <span style="color:red">*</span></label>
+                <input type="number" class="form-control" id="clientDependentsUnder18" placeholder="If none, please put 0" required=required>
               </div>
             </div>
           </div>
@@ -394,18 +421,18 @@
                 <div id="client-allergy-container1" class="client-allergy-container" style="display:none;">
                   <h5>Allergy 1</h5>
                   <div class="input-field">
-                    <label for="inputAllergies">Allergy</label>
-                    <input type="text" class="form-control" id="inputAllergies" placeholder="Allergy" required=true>
+                    <label for="client-allergy1">Allergy</label>
+                    <input type="text" class="form-control" id="client-allergy1" placeholder="Allergy">
                   </div>
 
                   <div class="input-field">
-                    <label for="inputReaction">Reaction to Allergan</label>
-                    <input type="text" class="form-control" id="inputReaction" placeholder="Allergic reaction" required=true>
+                    <label for="client-allergy1-reaction">Reaction to Allergan</label>
+                    <input type="text" class="form-control" id="client-allergy1-reaction" placeholder="Allergic reaction">
                   </div>
 
                   <div class="input-field">
-                    <label for="inputAllergyStartDate">Date allergy reaction began?</label>
-                    <input type="date" class="form-control" id="inputStartDate" required=true>
+                    <label for="client-allergy1-startDate">Date allergy reaction began?</label>
+                    <input type="date" class="form-control" id="client-allergy1-startDate">
                   </div>
                   
                   <button type="button" id="btn-remove-client-allergy1" class="btn btn-secondary" onclick="removeClientAllergy(this.id)">Remove Allergy</button>
@@ -419,42 +446,49 @@
 
           </div>
 
-          <button type="submit" class="btn btn-primary mx-auto d-block" id="btn-next" onclick="submitClientForm()">Next</button>
+          <button type="button" class="btn btn-primary mx-auto d-block" id="btn-submit" onsubmit="return false" onclick="submitClientForm()">Submit</button>
         </form>
       </div>
 
       <div id="parent-container" style="display:none">
         <h3>Parent/Guardian Form</h3>
-        <em>
+        
+        <p>
         Mountain Counseling & Training provides services to only clients with IEHP or Medicaid. 
         If you do not have either insurance, please contact us at (909) 336-3330.
-        </em>
+        </p>
+        <p></p>
+        <em>Required field (<span style="color:red">*</span>)</em>
+      
+        <b id="parent-error-message" class="form-error-mssg" style="display:none;">There was an error processing your form.</b>
         <form id="parent-form" style="margin-top:1rem;">
           <div id="parent-form-row" class="form-row">
             <div class="form-group col-md-6" style="padding-right:2%;">
+              <div class="form-row">
+	              <div class="col input-field">
+	                <label for="guardianFirstName">First Name <span style="color:red">*</span></label>
+	                <input type="text" class="form-control" id="guardianFirstName" placeholder="First name" required=required>
+	              </div>
+	
+	              <div class="col input-field">
+	                <label for="guardianLastName">Last Name <span style="color:red">*</span></label>
+	                <input type="text" class="form-control" id="guardianLastName" placeholder="Last name" required=required>
+	              </div>
+	          </div>
+
               <div class="input-field">
-                <label for="inputFirstName">First Name</label>
-                <input type="text" class="form-control" id="inputFirstName" placeholder="First name" required=true>
+                <label for="guardianPhone">Phone Number <span style="color:red">*</span></label>
+                <input type="tel" class="form-control" id="guardianPhone" placeholder="Phone number" required=required>
               </div>
 
               <div class="input-field">
-                <label for="inputLastName">Last Name</label>
-                <input type="text" class="form-control" id="inputLastName" placeholder="Last name" required=true>
+                <label for="guardianEmail">Email Address <span style="color:red">*</span></label>
+                <input type="email" class="form-control" id="guardianEmail" placeholder="Email address" required=required>
               </div>
 
               <div class="input-field">
-                <label for="inputPhone">Phone Number</label>
-                <input type="tel" class="form-control" id="inputPhone" placeholder="Phone number" required=true>
-              </div>
-
-              <div class="input-field">
-                <label for="inputEmail">Email Address</label>
-                <input type="email" class="form-control" id="inputEmail" placeholder="Email address" required=true>
-              </div>
-
-              <div class="input-field">
-                <label for="inputRelationship">Relationship to Child</label>
-                <select id="inputRelationship" class="form-control" required=true>
+                <label for="guardianRelationship">Relationship to Child <span style="color:red">*</span></label>
+                <select id="guardianRelationship" class="form-control" required=required>
                   <option value="" selected>Select one</option>
                   <option>Biological Mother</option>
                   <option>Biological Father</option>
@@ -468,13 +502,13 @@
               </div>
 
               <div class="input-field">
-                <label for="inputRelationshipOther">If other, please specify:</label>
-                <input type="text" class="form-control" id="inputRelationshipOther">
+                <label for="guardianRelationshipOther">If you selected Other for relationship, please specify:</label>
+                <input type="text" class="form-control" id="guardianRelationshipOther">
               </div>
 
               <div class="input-field">
-                <label for="inputLegalGuardian">Legal Guardian</label>
-                <select id="inputLegalGuardian" class="form-control" required=true>
+                <label for="guardianLegalGuardian">Legal Guardian <span style="color:red">*</span></label>
+                <select id="guardianLegalGuardian" class="form-control" required=required>
                   <option value="" selected>Select one</option>
                   <option>Yes</option>
                   <option>No</option>
@@ -486,14 +520,14 @@
               <div class="input-field">
                 <p>Would you like to be included on our mailing list to receive our newsletter and information on events?</p>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="mailingRadio" id="yesTrainingRadio" onclick="javascript:freeTrainingCheck();" value="yes">
+                  <input class="form-check-input" type="radio" name="mailingRadio" id="yesMailingRadio" value="yes">
                   <label class="form-check-label" for="yesTrainingRadio">
                     Yes
                   </label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="mailingRadio" id="noTrainingRadio" onclick="javascript:freeTrainingCheck();" value="no">
-                  <label class="form-check-label" for="noTrainingRadio" selected=true>
+                  <input class="form-check-input" type="radio" name="mailingRadio" id="noMailingRadio" value="no" checked>
+                  <label class="form-check-label" for="noTrainingRadio">
                     No
                   </label>
                 </div>
@@ -502,14 +536,14 @@
               <div class="input-field">
                 <p>Do you have any children in your family under 6?</p>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="childUnder6Radio" id="yesRadio" onclick="javascript:childUnder6Check();" value="yes">
+                  <input class="form-check-input" type="radio" name="childrenUnder6Radio" id="yesChildrenUnder6Radio" value="yes">
                   <label class="form-check-label" for="yesRadio">
                     Yes
                   </label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="childUnder6Radio" id="noRadio" onclick="javascript:childUnder6Check();" value="no">
-                  <label class="form-check-label" for="noRadio" selected=true>
+                  <input class="form-check-input" type="radio" name="childrenUnder6Radio" id="noChildrenUnder6Radio" value="no" checked>
+                  <label class="form-check-label" for="noRadio">
                     No
                   </label>
                 </div>
@@ -518,14 +552,14 @@
               <div class="input-field">
                 <p>If yes, would you be interested in having one of our parenting experts reach out to you about some free training?</p>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="freeTrainingRadio" id="yesTrainingRadio" onclick="freeTrainingCheck()" value="yes">
+                  <input class="form-check-input" type="radio" name="freeTrainingRadio" id="yesTrainingRadio" value="yes">
                   <label class="form-check-label" for="yesTrainingRadio">
                     Yes
                   </label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="freeTrainingRadio" id="noTrainingRadio" onclick="freeTrainingCheck()" value="no">
-                  <label class="form-check-label" for="noTrainingRadio" selected=true>
+                  <input class="form-check-input" type="radio" name="freeTrainingRadio" id="noTrainingRadio" value="no" checked>
+                  <label class="form-check-label" for="noTrainingRadio">
                     No
                   </label>
                 </div>
@@ -535,32 +569,34 @@
           
           <div id="children-container">
 
-		      <div id="child-container1" class="child-container" style="display:none;">
+		      <div id="child-container1" class="child-container" style="display:block;">
 		      	<hr id="child-container-divider"></hr>
 		        <h3>Child 1</h3>
 		        
-		        <button type="button" id="btn-remove-child1" class="btn btn-primary" style="background-color: #E0AF27; border: 0; margin: 10px 0px 10px 0px;" onclick="removeChildForm(this.id)">Remove Child</button>
+		        <button type="button" id="btn-remove-child1" class="btn btn-primary" style="background-color: #E0AF27; border: 0; margin: 10px 0px 10px 0px; display: none;" onclick="removeChildForm(this.id)">Remove Child</button>
 		        
 		        <div class="form-row">
 		          <div class="form-group col-md-6" style="padding-right:2%;">
-		            <div class="input-field">
-		              <label for="inputFirstName">First Name</label>
-		              <input type="text" class="form-control" id="inputFirstName" placeholder="First name" required=true>
+		            <div class="form-row">
+			            <div class="col input-field">
+			              <label for="inputFirstName">First Name <span style="color:red">*</span></label>
+			              <input type="text" class="form-control" id="inputFirstName" placeholder="First name" required=required>
+			            </div>
+			
+			            <div class="col input-field">
+			              <label for="inputLastName">Last Name <span style="color:red">*</span></label>
+			              <input type="text" class="form-control" id="inputLastName" placeholder="Last name" required=required>
+			            </div>
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputLastName">Last Name</label>
-		              <input type="text" class="form-control" id="inputLastName" placeholder="Last name" required=true>
+		              <label for="inputDateOfBirth">Date of Birth <span style="color:red">*</span></label>
+		              <input type="date" class="form-control" id="inputDateOfBirth" required=required>
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputDateOfBirth">Date of Birth</label>
-		              <input type="date" class="form-control" id="inputDateOfBirth" required=true>
-		            </div>
-		
-		            <div class="input-field">
-		              <label for="inputGender">Gender</label>
-		              <select id="inputGender" class="form-control" required=true>
+		              <label for="inputGender">Gender <span style="color:red">*</span></label>
+		              <select id="inputGender" class="form-control" required=required>
 		                <option value="" selected>Select one</option>
 		                <option>Female</option>
 		                <option>Male</option>
@@ -570,13 +606,13 @@
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputGenderOther">If other, please specify:</label>
+		              <label for="inputGenderOther">If you selected Other for gender, please specify:</label>
 		              <input type="text" class="form-control" id="inputGenderOther">
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputPreferredLanguage">Preferred Language</label>
-		              <select id="inputPreferredLanguage" class="form-control" required=true>
+		              <label for="inputPreferredLanguage">Preferred Language <span style="color:red">*</span></label>
+		              <select id="inputPreferredLanguage" class="form-control" required=required>
 		                <option value="" selected>Select one</option>
 		                <option>English</option>
 		                <option>Spanish</option>
@@ -585,13 +621,13 @@
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputPreferredLanguageOther">If other, please specify:</label>
+		              <label for="inputPreferredLanguageOther">If you selected Other for preferred language, please specify:</label>
 		              <input type="text" class="form-control" id="inputPreferredLanguageOther">
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputEthnicity">Ethnicity</label>
-		              <select id="inputEthnicity" class="form-control" required=true>
+		              <label for="inputEthnicity">Ethnicity <span style="color:red">*</span></label>
+		              <select id="inputEthnicity" class="form-control" required=required>
 		                <option value="" selected>Select one</option>
 		                <option>American Indian or Alaska Native</option>
 		                <option>Asian</option>
@@ -604,222 +640,230 @@
 		
 		            <div class="input-field">
 		              <div class="input-physical-address">
-		                <label for="inputPhysicalAddress">Physical Address</label>
-		                <input type="text" class="form-control" id="inputPhysicalAddress" style="margin-bottom:4px;" placeholder="Street address" required=true>
+		                <label for="inputPhysicalAddress">Physical Address <span style="color:red">*</span></label>
+		                <input type="text" class="form-control" id="inputPhysicalAddress" style="margin-bottom:4px;" placeholder="Street address" required=required>
 		                <input type="text" class="form-control" id="inputPhysicalAddress2" style="margin-bottom:4px;" placeholder="Apartment number, unit, floor, etc.">
-		                <select id="inputPhysicalAddressState" class="form-control" style="margin-bottom:4px;" required=true>
-		                  <option value="" selected>State</option>
-		                  <option value="AL">Alabama</option>
-		                  <option value="AK">Alaska</option>
-		                  <option value="AZ">Arizona</option>
-		                  <option value="AR">Arkansas</option>
-		                  <option value="CA">California</option>
-		                  <option value="CO">Colorado</option>
-		                  <option value="CT">Connecticut</option>
-		                  <option value="DE">Delaware</option>
-		                  <option value="DC">District Of Columbia</option>
-		                  <option value="FL">Florida</option>
-		                  <option value="GA">Georgia</option>
-		                  <option value="HI">Hawaii</option>
-		                  <option value="ID">Idaho</option>
-		                  <option value="IL">Illinois</option>
-		                  <option value="IN">Indiana</option>
-		                  <option value="IA">Iowa</option>
-		                  <option value="KS">Kansas</option>
-		                  <option value="KY">Kentucky</option>
-		                  <option value="LA">Louisiana</option>
-		                  <option value="ME">Maine</option>
-		                  <option value="MD">Maryland</option>
-		                  <option value="MA">Massachusetts</option>
-		                  <option value="MI">Michigan</option>
-		                  <option value="MN">Minnesota</option>
-		                  <option value="MS">Mississippi</option>
-		                  <option value="MO">Missouri</option>
-		                  <option value="MT">Montana</option>
-		                  <option value="NE">Nebraska</option>
-		                  <option value="NV">Nevada</option>
-		                  <option value="NH">New Hampshire</option>
-		                  <option value="NJ">New Jersey</option>
-		                  <option value="NM">New Mexico</option>
-		                  <option value="NY">New York</option>
-		                  <option value="NC">North Carolina</option>
-		                  <option value="ND">North Dakota</option>
-		                  <option value="OH">Ohio</option>
-		                  <option value="OK">Oklahoma</option>
-		                  <option value="OR">Oregon</option>
-		                  <option value="PA">Pennsylvania</option>
-		                  <option value="RI">Rhode Island</option>
-		                  <option value="SC">South Carolina</option>
-		                  <option value="SD">South Dakota</option>
-		                  <option value="TN">Tennessee</option>
-		                  <option value="TX">Texas</option>
-		                  <option value="UT">Utah</option>
-		                  <option value="VT">Vermont</option>
-		                  <option value="VA">Virginia</option>
-		                  <option value="WA">Washington</option>
-		                  <option value="WV">West Virginia</option>
-		                  <option value="WI">Wisconsin</option>
-		                  <option value="WY">Wyoming</option>
-		                </select>
-		                <input type="text" class="form-control" id="inputPhysicalAddressZipCode" style="margin-bottom:4px;" placeholder="Zip Code" required=true>
+		                <div class="form-row">
+			                <select id="inputPhysicalAddressState" class="col form-control" style="margin-bottom:4px; margin-left: 1%; margin-right: 1%;" required=required>
+			                  <option value="" selected>State</option>
+			                  <option value="AL">Alabama</option>
+			                  <option value="AK">Alaska</option>
+			                  <option value="AZ">Arizona</option>
+			                  <option value="AR">Arkansas</option>
+			                  <option value="CA">California</option>
+			                  <option value="CO">Colorado</option>
+			                  <option value="CT">Connecticut</option>
+			                  <option value="DE">Delaware</option>
+			                  <option value="DC">District Of Columbia</option>
+			                  <option value="FL">Florida</option>
+			                  <option value="GA">Georgia</option>
+			                  <option value="HI">Hawaii</option>
+			                  <option value="ID">Idaho</option>
+			                  <option value="IL">Illinois</option>
+			                  <option value="IN">Indiana</option>
+			                  <option value="IA">Iowa</option>
+			                  <option value="KS">Kansas</option>
+			                  <option value="KY">Kentucky</option>
+			                  <option value="LA">Louisiana</option>
+			                  <option value="ME">Maine</option>
+			                  <option value="MD">Maryland</option>
+			                  <option value="MA">Massachusetts</option>
+			                  <option value="MI">Michigan</option>
+			                  <option value="MN">Minnesota</option>
+			                  <option value="MS">Mississippi</option>
+			                  <option value="MO">Missouri</option>
+			                  <option value="MT">Montana</option>
+			                  <option value="NE">Nebraska</option>
+			                  <option value="NV">Nevada</option>
+			                  <option value="NH">New Hampshire</option>
+			                  <option value="NJ">New Jersey</option>
+			                  <option value="NM">New Mexico</option>
+			                  <option value="NY">New York</option>
+			                  <option value="NC">North Carolina</option>
+			                  <option value="ND">North Dakota</option>
+			                  <option value="OH">Ohio</option>
+			                  <option value="OK">Oklahoma</option>
+			                  <option value="OR">Oregon</option>
+			                  <option value="PA">Pennsylvania</option>
+			                  <option value="RI">Rhode Island</option>
+			                  <option value="SC">South Carolina</option>
+			                  <option value="SD">South Dakota</option>
+			                  <option value="TN">Tennessee</option>
+			                  <option value="TX">Texas</option>
+			                  <option value="UT">Utah</option>
+			                  <option value="VT">Vermont</option>
+			                  <option value="VA">Virginia</option>
+			                  <option value="WA">Washington</option>
+			                  <option value="WV">West Virginia</option>
+			                  <option value="WI">Wisconsin</option>
+			                  <option value="WY">Wyoming</option>
+			                </select>
+			                <input type="text" class="col form-control" id="inputPhysicalAddressZipCode" style="margin-bottom:4px; margin-left: 1%; margin-right: 1%;" placeholder="Zip Code" required=required>
+		              	</div>
 		              </div>
 		            </div>
 		
 		            <div class="input-field">
 		              <div class="input-mailing-address">
-		                <label for="inputMailingAddress">Mailing Address</label>
-		                <input type="text" class="form-control" id="inputMailingAddress" style="margin-bottom:4px;" placeholder="Street address" required=true>
+		                <label for="inputMailingAddress">Mailing Address <span style="color:red">*</span></label>
+		                <input type="text" class="form-control" id="inputMailingAddress" style="margin-bottom:4px;" placeholder="Street address" required=required>
 		                <input type="text" class="form-control" id="inputMailingAddress2" style="margin-bottom:4px;" placeholder="Apartment number, unit, floor, etc.">
-		                <select id="inputMailingAddressState" class="form-control" style="margin-bottom:4px;" required=true>
-		                  <option value="" selected>State</option>
-		                  <option value="AL">Alabama</option>
-		                  <option value="AK">Alaska</option>
-		                  <option value="AZ">Arizona</option>
-		                  <option value="AR">Arkansas</option>
-		                  <option value="CA">California</option>
-		                  <option value="CO">Colorado</option>
-		                  <option value="CT">Connecticut</option>
-		                  <option value="DE">Delaware</option>
-		                  <option value="DC">District Of Columbia</option>
-		                  <option value="FL">Florida</option>
-		                  <option value="GA">Georgia</option>
-		                  <option value="HI">Hawaii</option>
-		                  <option value="ID">Idaho</option>
-		                  <option value="IL">Illinois</option>
-		                  <option value="IN">Indiana</option>
-		                  <option value="IA">Iowa</option>
-		                  <option value="KS">Kansas</option>
-		                  <option value="KY">Kentucky</option>
-		                  <option value="LA">Louisiana</option>
-		                  <option value="ME">Maine</option>
-		                  <option value="MD">Maryland</option>
-		                  <option value="MA">Massachusetts</option>
-		                  <option value="MI">Michigan</option>
-		                  <option value="MN">Minnesota</option>
-		                  <option value="MS">Mississippi</option>
-		                  <option value="MO">Missouri</option>
-		                  <option value="MT">Montana</option>
-		                  <option value="NE">Nebraska</option>
-		                  <option value="NV">Nevada</option>
-		                  <option value="NH">New Hampshire</option>
-		                  <option value="NJ">New Jersey</option>
-		                  <option value="NM">New Mexico</option>
-		                  <option value="NY">New York</option>
-		                  <option value="NC">North Carolina</option>
-		                  <option value="ND">North Dakota</option>
-		                  <option value="OH">Ohio</option>
-		                  <option value="OK">Oklahoma</option>
-		                  <option value="OR">Oregon</option>
-		                  <option value="PA">Pennsylvania</option>
-		                  <option value="RI">Rhode Island</option>
-		                  <option value="SC">South Carolina</option>
-		                  <option value="SD">South Dakota</option>
-		                  <option value="TN">Tennessee</option>
-		                  <option value="TX">Texas</option>
-		                  <option value="UT">Utah</option>
-		                  <option value="VT">Vermont</option>
-		                  <option value="VA">Virginia</option>
-		                  <option value="WA">Washington</option>
-		                  <option value="WV">West Virginia</option>
-		                  <option value="WI">Wisconsin</option>
-		                  <option value="WY">Wyoming</option>
-		                </select>
-		                <input type="text" class="form-control" id="inputMailingAddressZipCode" style="margin-bottom:4px;" placeholder="Zip Code" required=true>
+		                <div class="form-row">
+			                <select id="inputMailingAddressState" class="col form-control" style="margin-bottom:4px; margin-left: 1%; margin-right: 1%;" required=required>
+			                  <option value="" selected>State</option>
+			                  <option value="AL">Alabama</option>
+			                  <option value="AK">Alaska</option>
+			                  <option value="AZ">Arizona</option>
+			                  <option value="AR">Arkansas</option>
+			                  <option value="CA">California</option>
+			                  <option value="CO">Colorado</option>
+			                  <option value="CT">Connecticut</option>
+			                  <option value="DE">Delaware</option>
+			                  <option value="DC">District Of Columbia</option>
+			                  <option value="FL">Florida</option>
+			                  <option value="GA">Georgia</option>
+			                  <option value="HI">Hawaii</option>
+			                  <option value="ID">Idaho</option>
+			                  <option value="IL">Illinois</option>
+			                  <option value="IN">Indiana</option>
+			                  <option value="IA">Iowa</option>
+			                  <option value="KS">Kansas</option>
+			                  <option value="KY">Kentucky</option>
+			                  <option value="LA">Louisiana</option>
+			                  <option value="ME">Maine</option>
+			                  <option value="MD">Maryland</option>
+			                  <option value="MA">Massachusetts</option>
+			                  <option value="MI">Michigan</option>
+			                  <option value="MN">Minnesota</option>
+			                  <option value="MS">Mississippi</option>
+			                  <option value="MO">Missouri</option>
+			                  <option value="MT">Montana</option>
+			                  <option value="NE">Nebraska</option>
+			                  <option value="NV">Nevada</option>
+			                  <option value="NH">New Hampshire</option>
+			                  <option value="NJ">New Jersey</option>
+			                  <option value="NM">New Mexico</option>
+			                  <option value="NY">New York</option>
+			                  <option value="NC">North Carolina</option>
+			                  <option value="ND">North Dakota</option>
+			                  <option value="OH">Ohio</option>
+			                  <option value="OK">Oklahoma</option>
+			                  <option value="OR">Oregon</option>
+			                  <option value="PA">Pennsylvania</option>
+			                  <option value="RI">Rhode Island</option>
+			                  <option value="SC">South Carolina</option>
+			                  <option value="SD">South Dakota</option>
+			                  <option value="TN">Tennessee</option>
+			                  <option value="TX">Texas</option>
+			                  <option value="UT">Utah</option>
+			                  <option value="VT">Vermont</option>
+			                  <option value="VA">Virginia</option>
+			                  <option value="WA">Washington</option>
+			                  <option value="WV">West Virginia</option>
+			                  <option value="WI">Wisconsin</option>
+			                  <option value="WY">Wyoming</option>
+			                </select>
+			                <input type="text" class="col form-control" id="inputMailingAddressZipCode" style="margin-bottom:4px; margin-left: 1%; margin-right:1%;" placeholder="Zip Code" required=required>
+		              	</div>
 		              </div>
 		            </div>
 		          </div>
 		
 		          <div class="form-group col-md-6" style="padding-left:2%;">
-		            <div class="input-field">
-		              <label for="inputInsuranceType">Insurance Type</label>
-		              <select id="inputInsuranceType" class="form-control" required=true>
-		                <option value="" selected>Select one</option>
-		                <option>IEHP</option>
-		                <option>Medicaid</option>
-		              </select>
+		          	<div class="form-row">
+			            <div class="col-4 input-field">
+			              <label for="inputInsuranceType">Insurance Type <span style="color:red">*</span></label>
+			              <select id="inputInsuranceType" class="form-control" required=required>
+			                <option value="" selected>Select one</option>
+			                <option>IEHP</option>
+			                <option>Medicaid</option>
+			              </select>
+			            </div>
+			
+			            <div class="col input-field">
+			              <label for="inputInsuranceNumber">Insurance Number <span style="color:red">*</span></label>
+			              <input type="text" class="form-control" id="inputInsuranceNumber" placeholder="Insurance number" required=required>
+			            </div>
+		            </div>
+		
+		            <div class="form-row">
+			            <div class="col input-field">
+			              <label for="inputBirthCounty">County of Birth <span style="color:red">*</span></label>
+			              <input type="text" class="form-control" id="inputBirthCounty" placeholder="County" required=required>
+			            </div>
+			
+			            <div class="col input-field">
+			              <label for="inputBirthState">State of Birth <span style="color:red">*</span></label>
+			              <select id="inputBirthState" class="form-control" style="margin-bottom:4px;" required=required>
+			                  <option value="" selected>State</option>
+			                  <option value="AL">Alabama</option>
+			                  <option value="AK">Alaska</option>
+			                  <option value="AZ">Arizona</option>
+			                  <option value="AR">Arkansas</option>
+			                  <option value="CA">California</option>
+			                  <option value="CO">Colorado</option>
+			                  <option value="CT">Connecticut</option>
+			                  <option value="DE">Delaware</option>
+			                  <option value="DC">District Of Columbia</option>
+			                  <option value="FL">Florida</option>
+			                  <option value="GA">Georgia</option>
+			                  <option value="HI">Hawaii</option>
+			                  <option value="ID">Idaho</option>
+			                  <option value="IL">Illinois</option>
+			                  <option value="IN">Indiana</option>
+			                  <option value="IA">Iowa</option>
+			                  <option value="KS">Kansas</option>
+			                  <option value="KY">Kentucky</option>
+			                  <option value="LA">Louisiana</option>
+			                  <option value="ME">Maine</option>
+			                  <option value="MD">Maryland</option>
+			                  <option value="MA">Massachusetts</option>
+			                  <option value="MI">Michigan</option>
+			                  <option value="MN">Minnesota</option>
+			                  <option value="MS">Mississippi</option>
+			                  <option value="MO">Missouri</option>
+			                  <option value="MT">Montana</option>
+			                  <option value="NE">Nebraska</option>
+			                  <option value="NV">Nevada</option>
+			                  <option value="NH">New Hampshire</option>
+			                  <option value="NJ">New Jersey</option>
+			                  <option value="NM">New Mexico</option>
+			                  <option value="NY">New York</option>
+			                  <option value="NC">North Carolina</option>
+			                  <option value="ND">North Dakota</option>
+			                  <option value="OH">Ohio</option>
+			                  <option value="OK">Oklahoma</option>
+			                  <option value="OR">Oregon</option>
+			                  <option value="PA">Pennsylvania</option>
+			                  <option value="RI">Rhode Island</option>
+			                  <option value="SC">South Carolina</option>
+			                  <option value="SD">South Dakota</option>
+			                  <option value="TN">Tennessee</option>
+			                  <option value="TX">Texas</option>
+			                  <option value="UT">Utah</option>
+			                  <option value="VT">Vermont</option>
+			                  <option value="VA">Virginia</option>
+			                  <option value="WA">Washington</option>
+			                  <option value="WV">West Virginia</option>
+			                  <option value="WI">Wisconsin</option>
+			                  <option value="WY">Wyoming</option>
+			                </select>
+		            	</div>
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputInsuranceNumber">Insurance Number</label>
-		              <input type="text" class="form-control" id="inputInsuranceNumber" placeholder="Insurance number" required=true>
+		              <label for="inputSchoolAttending">School Attending <span style="color:red">*</span></label>
+		              <input type="text" class="form-control" id="inputSchoolAttending" placeholder="School" required=required>
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputBirthCounty">County of Birth</label>
-		              <input type="text" class="form-control" id="inputBirthCounty" placeholder="County" required=true>
+		              <label for="inputGradeLevel">Last Completed Grade Level <span style="color:red">*</span></label>
+		              <input type="text" class="form-control" id="inputGradeLevel" placeholder="Grade Level" required=required>
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputBirthState">State of Birth</label>
-		              <select id="inputBirthState" class="form-control" style="margin-bottom:4px;" required=true>
-		                  <option value="" selected>State</option>
-		                  <option value="AL">Alabama</option>
-		                  <option value="AK">Alaska</option>
-		                  <option value="AZ">Arizona</option>
-		                  <option value="AR">Arkansas</option>
-		                  <option value="CA">California</option>
-		                  <option value="CO">Colorado</option>
-		                  <option value="CT">Connecticut</option>
-		                  <option value="DE">Delaware</option>
-		                  <option value="DC">District Of Columbia</option>
-		                  <option value="FL">Florida</option>
-		                  <option value="GA">Georgia</option>
-		                  <option value="HI">Hawaii</option>
-		                  <option value="ID">Idaho</option>
-		                  <option value="IL">Illinois</option>
-		                  <option value="IN">Indiana</option>
-		                  <option value="IA">Iowa</option>
-		                  <option value="KS">Kansas</option>
-		                  <option value="KY">Kentucky</option>
-		                  <option value="LA">Louisiana</option>
-		                  <option value="ME">Maine</option>
-		                  <option value="MD">Maryland</option>
-		                  <option value="MA">Massachusetts</option>
-		                  <option value="MI">Michigan</option>
-		                  <option value="MN">Minnesota</option>
-		                  <option value="MS">Mississippi</option>
-		                  <option value="MO">Missouri</option>
-		                  <option value="MT">Montana</option>
-		                  <option value="NE">Nebraska</option>
-		                  <option value="NV">Nevada</option>
-		                  <option value="NH">New Hampshire</option>
-		                  <option value="NJ">New Jersey</option>
-		                  <option value="NM">New Mexico</option>
-		                  <option value="NY">New York</option>
-		                  <option value="NC">North Carolina</option>
-		                  <option value="ND">North Dakota</option>
-		                  <option value="OH">Ohio</option>
-		                  <option value="OK">Oklahoma</option>
-		                  <option value="OR">Oregon</option>
-		                  <option value="PA">Pennsylvania</option>
-		                  <option value="RI">Rhode Island</option>
-		                  <option value="SC">South Carolina</option>
-		                  <option value="SD">South Dakota</option>
-		                  <option value="TN">Tennessee</option>
-		                  <option value="TX">Texas</option>
-		                  <option value="UT">Utah</option>
-		                  <option value="VT">Vermont</option>
-		                  <option value="VA">Virginia</option>
-		                  <option value="WA">Washington</option>
-		                  <option value="WV">West Virginia</option>
-		                  <option value="WI">Wisconsin</option>
-		                  <option value="WY">Wyoming</option>
-		                </select>
-		            </div>
-		
-		            <div class="input-field">
-		              <label for="inputSchoolAttending">School Attending</label>
-		              <input type="text" class="form-control" id="inputSchoolAttending" placeholder="School" required=true>
-		            </div>
-		
-		            <div class="input-field">
-		              <label for="inputGradeLevel">Last Completed Grade Level</label>
-		              <input type="text" class="form-control" id="inputGradeLevel" placeholder="Grade Level" required=true>
-		            </div>
-		
-		            <div class="input-field">
-		              <label for="inputEmploymentStatus">Employment Status</label>
-		              <select id="inputEmploymentStatus" class="form-control" required=true>
+		              <label for="inputEmploymentStatus">Employment Status <span style="color:red">*</span></label>
+		              <select id="inputEmploymentStatus" class="form-control" required=required>
 		                <option value="" selected>Select one</option>
 		                <option>Student</option>
 		                <option>Unemployed</option>
@@ -828,13 +872,13 @@
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputEmploymentStatusOther">If other, please specify:</label>
+		              <label for="inputEmploymentStatusOther">If you selected Other for employment status, please specify:</label>
 		              <input type="text" class="form-control" id="inputEmploymentStatusOther">
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputMaritalStatus">Marital Status</label>
-		              <select id="inputMaritalStatus" class="form-control" required=true>
+		              <label for="inputMaritalStatus">Marital Status <span style="color:red">*</span></label>
+		              <select id="inputMaritalStatus" class="form-control" required=required>
 		                <option value="" selected>Select one</option>
 		                <option>Married</option>
 		                <option>Never Married</option>
@@ -845,8 +889,8 @@
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputLivingArrangement">Living Arrangement</label>
-		              <select id="inputLivingArrangement" class="form-control" required=true>
+		              <label for="inputLivingArrangement">Living Arrangement <span style="color:red">*</span></label>
+		              <select id="inputLivingArrangement" class="form-control" required=required>
 		                <option value="" selected>Select one</option>
 		                <option>Family</option>
 		                <option>Extended Family</option>
@@ -860,18 +904,18 @@
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputLivingArrangementOther">If other, please specify:</label>
+		              <label for="inputLivingArrangementOther">If you selected Other for living arrangement, please specify:</label>
 		              <input type="text" class="form-control" id="inputLivingArrangementOther">
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputDependentsOver18">How many dependents over 18 does the client have?</label>
-		              <input type="number" class="form-control" id="inputDependentsOver18" placeholder="If none, please put 0" required=true>
+		              <label for="inputDependentsOver18">How many dependents over 18 does the client have? <span style="color:red">*</span></label>
+		              <input type="number" class="form-control" id="inputDependentsOver18" placeholder="If none, please put 0" required=required>
 		            </div>
 		
 		            <div class="input-field">
-		              <label for="inputDependentsUnder18">How many dependents under 18 does the client have?</label>
-		              <input type="number" class="form-control" id="inputDependentsUnder18" placeholder="If none, please put 0" required=true>
+		              <label for="inputDependentsUnder18">How many dependents under 18 does the client have? <span style="color:red">*</span></label>
+		              <input type="number" class="form-control" id="inputDependentsUnder18" placeholder="If none, please put 0" required=required>
 		            </div>
 		          </div>
 		        </div>
@@ -886,18 +930,18 @@
 		              <div id="child1-allergy1-container" class="child-allergy-container" style="display:none;">
 		                <h5>Allergy 1</h5>
 		                <div class="input-field">
-		                  <label for="inputAllergies">Allergy</label>
-		                  <input type="text" class="form-control" id="inputAllergies" placeholder="Allergy" required=true>
+		                  <label for="child1-allergy1">Allergy</label>
+		                  <input type="text" class="form-control" id="child1-allergy1" placeholder="Allergy">
 		                </div>
 		
 		                <div class="input-field">
-		                  <label for="inputReaction">Reaction to Allergan</label>
-		                  <input type="text" class="form-control" id="inputReaction" placeholder="Allergic reaction" required=true>
+		                  <label for="child1-allergy1-reaction">Reaction to Allergan</label>
+		                  <input type="text" class="form-control" id="child1-allergy1-reaction" placeholder="Allergic reaction">
 		                </div>
 		
 		                <div class="input-field">
-		                  <label for="inputAllergyStartDate">Date allergy reaction began?</label>
-		                  <input type="date" class="form-control" id="inputStartDate" required=true>
+		                  <label for="child1-allergy1-startDate">Date allergy reaction began?</label>
+		                  <input type="date" class="form-control" id="child1-allergy1-startDate">
 		                </div>
 		                
 		                <button type="button" id="btn-remove-child1-allergy1" class="btn btn-secondary" onclick="removeChildAllergy(this.id)">Remove Allergy</button>
@@ -912,7 +956,7 @@
           </div>
 
           <button type="button" class="btn btn-secondary mx-auto d-block" id="btn-add-child" onclick="addChild()">Add a Child</button>
-          <button type="submit" class="btn btn-primary mx-auto d-block" id="btn-next" onclick="submitGuardianForm()">Next</button>
+          <button type="button" class="btn btn-primary mx-auto d-block" id="btn-submit" onclick="submitGuardianForm()">Submit</button>
           
         </form>
       </div>
