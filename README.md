@@ -1,15 +1,7 @@
 # MCT-Booking-App
 
-The code for Deliverable 4 consists of the following pages:  
-1. Booking portal    
-2. Login  
-3. Client intake form  
-4. Client calendar (appointment day/time selection)  
-5. Clinician dashboard  
-6. Client dashboard  
-7. Client booking summary/confirmation
-8. Client booking confirmed
+The code for Deliverable 6 includes changes to the patient intake form:  
+1. patientform.html: UI changes   
+2. patientform.js: Bug fixes, email subscription feature, and training signup feature   
 
-The screenshots directory contains images of the webpages for reference.
-
-Import this repository into Eclipse or Visual Studio.
+Since this is a static page, you can open the html file in your web browser (e.g. Chrome) and interact with it. The data in a submitted form will be stored in an AWS S3 database.
