@@ -316,7 +316,7 @@ function upload(key, obj) {
 /*
  * Fetch data in S3 bucket and update it.
  */
-function update(key, email) {
+function update(key, email, doAdd) {
 	const fetchParams = {
 		Bucket: bucketName,
 		Key: key
@@ -328,12 +328,31 @@ function update(key, email) {
 	      	return 0;
 	    }
 	
-		var content = data.Body.toString(); 
-		if (content.includes(email)) {
-			return 0;
-		}
+		var content = data.Body.toString(); // ex: content is "1@g.com, 2@g.com, 3@g.com,"
 		
-		content += email + ', ';		
+		// Add email to subscription list; else, remove email from subscription list
+		if (doAdd) {
+			if (content.includes(email)) {
+				return 0;
+			}
+			
+			content += email + ', ';
+		}
+		else {
+			var firstComma = content.indexOf(',');				
+			if (content.substring(0, firstComma).equals(email)) {
+				content = content.substring(firstComma + 2, content.length);
+				return upload(key, content);
+			}
+			
+			var idx = content.search(', ' + email + ',');
+			if (idx < 0) {
+				return 0;
+			}
+			
+			content = content.substring(0, idx) + content.substring(idx + email.length + 2, content.length);
+		}		
+				
 		return upload(key, content);
 	 })
 }
@@ -567,10 +586,16 @@ function submitGuardianForm() {
 		
 		// Handle mailing subscriptions and training signups
 		if (mailingList == 'yes') {
-			update('email-subscriptions/email-subscriptions.txt', email);
-		};
+			update('email-subscriptions/email-subscriptions.txt', email, true);
+		} 
+		else {
+			update('email-subscriptions/email-subscriptions.txt', email, false);
+		}
 		if (training == 'yes') {
-			update('training-signups/training-signups.txt', email);
+			update('training-signups/training-signups.txt', email, true);
+		} 
+		else {
+			update('training-signups/training-signups.txt', email, false);
 		}
 						
 		// Write guardian data to object
