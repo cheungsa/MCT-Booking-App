@@ -87,6 +87,9 @@ function removeClientAllergy(btnId) {
 
 	if (clientAllergyCount == 0) {
 		// If only one allergy left, hide it as a template for future allergies
+		document.getElementById('client-allergy1').value = '';
+		document.getElementById('client-allergy1-reaction').value = '';
+		document.getElementById('client-allergy1-startDate').value = '';
 		document.getElementById('client-allergy1').removeAttribute('required');
 		document.getElementById('client-allergy1-reaction').removeAttribute('required');
 		document.getElementById('client-allergy1-startDate').removeAttribute('required');
@@ -104,6 +107,9 @@ function removeClientAllergy(btnId) {
 			allergies[i].getElementsByTagName('label')[0].setAttribute('for', 'client-allergy' + allergyNum);
 			allergies[i].getElementsByTagName('label')[1].setAttribute('for', 'client-allergy' + allergyNum + '-reaction');
 			allergies[i].getElementsByTagName('label')[2].setAttribute('for', 'client-allergy' + allergyNum + '-startDate');
+			allergies[i].getElementsByTagName('input')[0].id = 'client-allergy' + allergyNum;
+			allergies[i].getElementsByTagName('input')[1].id = 'client-allergy' + allergyNum + '-reaction';
+			allergies[i].getElementsByTagName('input')[2].id = 'client-allergy' + allergyNum + '-startDate';
 		}
 
 		allergy.remove();
@@ -132,6 +138,30 @@ function addChild() {
 		buttons[0].style.display = 'block';
 		buttons[1].id = "btn-add-child" + childCount + "-allergy";
 		buttons[2].id = "btn-remove-child" + childCount + "-allergy1";
+		
+		// Rename allergies container
+		var numAllergies = clone.getElementsByClassName('child-allergies-container').length;
+		var allergies = clone.getElementsByClassName('child-allergies-container')[numAllergies-1];
+		allergies.getElementsByTagName('label')[0].setAttribute('for', 'child' + childCount + '-allergy1');
+		allergies.getElementsByTagName('label')[1].setAttribute('for', 'child' + childCount + '-allergy1-reaction');
+		allergies.getElementsByTagName('label')[2].setAttribute('for', 'child' + childCount + '-allergy1-startDate');
+		allergies.getElementsByTagName('input')[0].id = "child" + childCount + "-allergy1";
+		allergies.getElementsByTagName('input')[1].id = "child" + childCount + "-allergy1-reaction";
+		allergies.getElementsByTagName('input')[2].id = "child" + childCount + "-allergy1-startDate";
+		
+		// Clear elements
+		for (var i=0; i<clone.getElementsByTagName('input').length; i++) {
+			clone.getElementsByTagName('input')[i].value = '';
+		}
+		for (var i=0; i<clone.getElementsByTagName('select').length; i++) {
+			clone.getElementsByTagName('select')[i].value = '';
+		}
+		var clone_allergies = clone.getElementsByClassName('child-allergy-container');
+		for (var i=clone_allergies.length-1; i>0; i--) {
+			clone_allergies[i].remove();
+		}
+		clone.getElementsByClassName('child-allergy-container')[0].style.display = 'none';
+		
 		parent.after(clone);
 	}
 }
@@ -157,10 +187,21 @@ function removeChildForm(btnId) {
 			children[i].getElementsByTagName('h3')[0].innerHTML = "Child " + childNum;
 			children[i].id = "child-container" + childNum;
 			children[i].getElementsByClassName('child-allergies-container')[0].id = "child" + childNum + "-allergies-container";
-			children[i].getElementsByClassName('child-allergy-container')[0].id = "child" + childNum + "-allergy1-container";
 			buttons[0].id = "btn-remove-child" + childNum;
 			buttons[1].id = "btn-add-child" + childNum + "-allergy";
-			buttons[2].id = "btn-remove-child" + childNum + "-allergy1";
+			
+			// Update allergies of children
+			var allergies = children[i].getElementsByClassName('child-allergy-container');
+			for (var j=0; j<allergies.length; j++) {				
+				allergies[j].id = "child" + childNum + "-allergy" + (j+1) + "-container";
+				allergies[j].getElementsByTagName('button')[0].id = "btn-remove-child" + childNum + "-allergy" + (j+1);
+				allergies[j].getElementsByTagName('label')[0].setAttribute('for', "child" + childNum + (j+1));
+				allergies[j].getElementsByTagName('label')[1].setAttribute('for', "child" + childNum + (j+1) + '-reaction');
+				allergies[j].getElementsByTagName('label')[2].setAttribute('for', "child" + childNum + (j+1) + '-startDate');
+				allergies[j].getElementsByTagName('input')[0].id = "child" + childNum + "-allergy" + (j+1);
+				allergies[j].getElementsByTagName('input')[1].id = "child" + childNum + "-allergy" + (j+1) + "-reaction";
+				allergies[j].getElementsByTagName('input')[2].id = "child" + childNum + "-allergy" + (j+1) + "-startDate";	
+			}
 		}
 		
 		var child1RmBtn = document.getElementById('btn-remove-child1');
@@ -206,8 +247,8 @@ function addChildAllergy(btnId) {
 
 function removeChildAllergy(btnId) {
 	var ids = btnId.split("child")[1].split('-allergy'); // ex: 'btn-remove-child1-allergy1'
-	var childId = ids[0];
-	var allergyId = ids[1];
+	var childId = ids[0]; 
+	var allergyId = ids[1];  
 	var allergy = document.getElementById('child' + childId + '-allergy' + allergyId + '-container');
 	var allergies = document.getElementById('child' + childId + '-allergies-container').getElementsByClassName('child-allergy-container');
 
@@ -216,6 +257,9 @@ function removeChildAllergy(btnId) {
 	if (childrenAllergyCount[childId-1] == 0) {
 		// If only one allergy left, hide it as a template for future allergies
 		allergy.style.display = 'none';
+		document.getElementById('child' + childId + '-allergy1').value = '';
+		document.getElementById('child' + childId + '-allergy1-reaction').value = '';
+		document.getElementById('child' + childId + '-allergy1-startDate').value = '';
 		document.getElementById('child' + childId + '-allergy1').removeAttribute('required');
 		document.getElementById('child' + childId + '-allergy1-reaction').removeAttribute('required');
 		document.getElementById('child' + childId + '-allergy1-startDate').removeAttribute('required');
@@ -229,12 +273,12 @@ function removeChildAllergy(btnId) {
 			allergies[i].getElementsByTagName('button')[0].id = "btn-remove-child" + childId + "-allergy" + allergyNum; // ex: 'btn-remove-child1-allergy1'
 			allergies[i].id = "child" + childId + "-allergy" + allergyNum + "-container";
 			
-			clone.getElementsByTagName('label')[0].setAttribute('for', 'child' + childId + '-allergy' + allergyNum);
-			clone.getElementsByTagName('label')[1].setAttribute('for', 'child' + childId + '-allergy' + allergyNum + '-reaction');
-			clone.getElementsByTagName('label')[2].setAttribute('for', 'child' + childId + '-allergy' + allergyNum + '-startDate');
-			clone.getElementsByTagName('input')[0].id = 'child' + childId + '-allergy' + allergyNum;		
-			clone.getElementsByTagName('input')[1].id = 'child' + childId + '-allergy' + allergyNum + '-reaction';
-			clone.getElementsByTagName('input')[2].id = 'child' + childId + '-allergy' + allergyNum + '-startDate';
+			allergies[i].getElementsByTagName('label')[0].setAttribute('for', 'child' + childId + '-allergy' + allergyNum);
+			allergies[i].getElementsByTagName('label')[1].setAttribute('for', 'child' + childId + '-allergy' + allergyNum + '-reaction');
+			allergies[i].getElementsByTagName('label')[2].setAttribute('for', 'child' + childId + '-allergy' + allergyNum + '-startDate');
+			allergies[i].getElementsByTagName('input')[0].id = 'child' + childId + '-allergy' + allergyNum;		
+			allergies[i].getElementsByTagName('input')[1].id = 'child' + childId + '-allergy' + allergyNum + '-reaction';
+			allergies[i].getElementsByTagName('input')[2].id = 'child' + childId + '-allergy' + allergyNum + '-startDate';
 		}
 
 		allergy.remove();
@@ -266,7 +310,7 @@ function upload(key, obj) {
 /*
  * Fetch data in S3 bucket and update it.
  */
-function update(key, email) {
+function update(key, email, doAdd) {
 	const fetchParams = {
 		Bucket: bucketName,
 		Key: key
@@ -278,12 +322,31 @@ function update(key, email) {
 	      	return 0;
 	    }
 	
-		var content = data.Body.toString(); 
-		if (content.includes(email)) {
-			return 0;
-		}
+		var content = data.Body.toString(); // ex: content is "1@g.com, 2@g.com, 3@g.com,"
 		
-		content += email + ', ';		
+		// Add email to subscription list; else, remove email from subscription list
+		if (doAdd) {
+			if (content.includes(email)) {
+				return 0;
+			}
+			
+			content += email + ', ';
+		}
+		else {
+			var firstComma = content.indexOf(',');				
+			if (content.substring(0, firstComma).equals(email)) {
+				content = content.substring(firstComma + 2, content.length);
+				return upload(key, content);
+			}
+			
+			var idx = content.search(', ' + email + ',');
+			if (idx < 0) {
+				return 0;
+			}
+			
+			content = content.substring(0, idx) + content.substring(idx + email.length + 2, content.length);
+		}		
+				
 		return upload(key, content);
 	 })
 }
@@ -308,7 +371,22 @@ function checkValidClientForm() {
 	for (var i=0; i<inputs.length; i++) {
 		if (inputs[i].hasAttribute('required') && inputs[i].value.length == 0) {
 			isValid = false;
-			mssg += inputs[i].labels[0].innerHTML;   
+			
+			if (inputs[i].labels.length == 0) {
+				if (inputs[i].id.includes('Mailing')) {
+					mssg += 'Mailing Address';
+				}
+				else if (inputs[i].id.includes('Physical')) {
+					mssg += 'Physical Address';
+				}
+				else {
+					mssg = "Please fill out all required fields (*)";
+				}
+			}
+			else {
+				mssg += inputs[i].labels[0].textContent.split(" *")[0];	
+			}   
+			
 			break;
 		}
 		else if (inputs[i].value == 'Other' && inputs[i+1].value.length == 0) {
@@ -443,7 +521,7 @@ function submitClientForm() {
 		// Webpage redirects after 3 seconds
 		alert("Thank you for submitting your form! You will be redirected back to the home page in a moment.");
 		setTimeout(function() {
-            window.location.href = 'https://mountaincounseling262527115.wpcomstaging.com';
+            window.location.href = 'https://www.mountaincounseling.org/';
     	}, 3000);
 	} catch (err) {
 		console.log(err);
@@ -462,12 +540,27 @@ function checkValidGuardianForm() {
 	for (var i=0; i<inputs.length; i++) {
 		if (inputs[i].hasAttribute('required') && inputs[i].value.length == 0) {
 			isValid = false;
-			mssg += inputs[i].labels[0].innerHTML;   
+			
+			if (inputs[i].labels.length == 0) {
+				if (inputs[i].id.includes('Mailing')) {
+					mssg += 'Mailing Address';
+				}
+				else if (inputs[i].id.includes('Physical')) {
+					mssg += 'Physical Address';
+				}
+				else {
+					mssg = "Please fill out all required fields (*)";
+				}
+			}
+			else {
+				mssg += inputs[i].labels[0].textContent.split(" *")[0];	
+			}
+			   
 			break;
 		}
 		else if (inputs[i].value == 'Other' && inputs[i+1].value.length == 0) {
 			isValid = false;
-			mssg += inputs[i].labels[0].innerHTML;
+			mssg += inputs[i].labels[0].textContent.split(" *")[0];
 			break;
 		}
 	}
@@ -517,10 +610,16 @@ function submitGuardianForm() {
 		
 		// Handle mailing subscriptions and training signups
 		if (mailingList == 'yes') {
-			update('email-subscriptions/email-subscriptions.txt', email);
-		};
+			update('email-subscriptions/email-subscriptions.txt', email, true);
+		} 
+		else {
+			update('email-subscriptions/email-subscriptions.txt', email, false);
+		}
 		if (training == 'yes') {
-			update('training-signups/training-signups.txt', email);
+			update('training-signups/training-signups.txt', email, true);
+		} 
+		else {
+			update('training-signups/training-signups.txt', email, false);
 		}
 						
 		// Write guardian data to object
@@ -623,7 +722,7 @@ function submitGuardianForm() {
 		// Webpage redirects after 3 seconds
 		alert("Thank you for submitting your form! You will be redirected back to the home page in a moment.");
 		setTimeout(function() {
-            window.location.href = 'https://mountaincounseling262527115.wpcomstaging.com';
+            window.location.href = 'https://www.mountaincounseling.org/';
     	}, 3000);
 	} catch (err) {
 		console.log(err);
