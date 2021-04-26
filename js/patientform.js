@@ -140,8 +140,6 @@ function addChild() {
 		buttons[2].id = "btn-remove-child" + childCount + "-allergy1";
 		
 		// Rename allergies container
-		alert("Number of children with allergies: " + clone.getElementsByClassName('child-allergies-container').length);
-		alert("Number of children: " + childCount);
 		var numAllergies = clone.getElementsByClassName('child-allergies-container').length;
 		var allergies = clone.getElementsByClassName('child-allergies-container')[numAllergies-1];
 		allergies.getElementsByTagName('label')[0].setAttribute('for', 'child' + childCount + '-allergy1');
@@ -159,9 +157,7 @@ function addChild() {
 			clone.getElementsByTagName('select')[i].value = '';
 		}
 		var clone_allergies = clone.getElementsByClassName('child-allergy-container');
-		alert("Copied " + clone_allergies.length + " elements");
 		for (var i=clone_allergies.length-1; i>0; i--) {
-			alert(clone_allergies[i].id);
 			clone_allergies[i].remove();
 		}
 		clone.getElementsByClassName('child-allergy-container')[0].style.display = 'none';
@@ -253,7 +249,6 @@ function removeChildAllergy(btnId) {
 	var ids = btnId.split("child")[1].split('-allergy'); // ex: 'btn-remove-child1-allergy1'
 	var childId = ids[0]; 
 	var allergyId = ids[1];  
-	alert("removing allergy " + allergyId + " for Child " + childId);
 	var allergy = document.getElementById('child' + childId + '-allergy' + allergyId + '-container');
 	var allergies = document.getElementById('child' + childId + '-allergies-container').getElementsByClassName('child-allergy-container');
 
@@ -272,7 +267,6 @@ function removeChildAllergy(btnId) {
 	else {
 		// Update IDs of allergies after the removed allergy
 		for (var i=allergyId; i<allergies.length; i++) {
-			alert("Updating " + allergies[i].id);
 			var allergyNum = parseInt(allergies[i].id.split("allergy")[1].split("-container")[0]);
 			allergyNum--;
 			allergies[i].getElementsByTagName('h5')[0].innerHTML = "Allergy " + allergyNum;
@@ -377,7 +371,22 @@ function checkValidClientForm() {
 	for (var i=0; i<inputs.length; i++) {
 		if (inputs[i].hasAttribute('required') && inputs[i].value.length == 0) {
 			isValid = false;
-			mssg += inputs[i].labels[0].innerHTML;   
+			
+			if (inputs[i].labels.length == 0) {
+				if (inputs[i].id.includes('Mailing')) {
+					mssg += 'Mailing Address';
+				}
+				else if (inputs[i].id.includes('Physical')) {
+					mssg += 'Physical Address';
+				}
+				else {
+					mssg = "Please fill out all required fields (*)";
+				}
+			}
+			else {
+				mssg += inputs[i].labels[0].textContent.split(" *")[0];	
+			}   
+			
 			break;
 		}
 		else if (inputs[i].value == 'Other' && inputs[i+1].value.length == 0) {
@@ -531,12 +540,27 @@ function checkValidGuardianForm() {
 	for (var i=0; i<inputs.length; i++) {
 		if (inputs[i].hasAttribute('required') && inputs[i].value.length == 0) {
 			isValid = false;
-			mssg += inputs[i].labels[0].innerHTML;   
+			
+			if (inputs[i].labels.length == 0) {
+				if (inputs[i].id.includes('Mailing')) {
+					mssg += 'Mailing Address';
+				}
+				else if (inputs[i].id.includes('Physical')) {
+					mssg += 'Physical Address';
+				}
+				else {
+					mssg = "Please fill out all required fields (*)";
+				}
+			}
+			else {
+				mssg += inputs[i].labels[0].textContent.split(" *")[0];	
+			}
+			   
 			break;
 		}
 		else if (inputs[i].value == 'Other' && inputs[i+1].value.length == 0) {
 			isValid = false;
-			mssg += inputs[i].labels[0].innerHTML;
+			mssg += inputs[i].labels[0].textContent.split(" *")[0];
 			break;
 		}
 	}
