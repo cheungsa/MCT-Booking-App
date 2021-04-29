@@ -323,18 +323,18 @@ function update(key, email, doAdd) {
 	    }
 	
 		var content = data.Body.toString(); // ex: content is "1@g.com, 2@g.com, 3@g.com,"
+		var firstComma = content.indexOf(',');
 		
 		// Add email to subscription list; else, remove email from subscription list
-		if (doAdd) {
-			if (content.includes(email)) {
+		if (doAdd === 'yes') {
+			if ((content.includes(', ' + email + ',')) || content.substring(0, firstComma) === email) {
 				return 0;
 			}
 			
 			content += email + ', ';
 		}
-		else {
-			var firstComma = content.indexOf(',');				
-			if (content.substring(0, firstComma).equals(email)) {
+		else {				
+			if (content.substring(0, firstComma) === email) {
 				content = content.substring(firstComma + 2, content.length);
 				return upload(key, content);
 			}
@@ -349,16 +349,6 @@ function update(key, email, doAdd) {
 				
 		return upload(key, content);
 	 })
-}
-
-
-function printValues(obj) {
-	var str = '';
-    for (var key in obj) {
-		str += key + ': ' + obj[key] + '\n'; 
-    }
-	console.log(str);
-	alert(str);
 }
 
 function checkValidClientForm() {
@@ -603,24 +593,14 @@ function submitGuardianForm() {
 			childrenUnder6 = 'yes';
 		}
 		
-		var training = 'no';
+		var trainingList = 'no';
 		if (document.getElementById('yesTrainingRadio').checked) {
-			training = 'yes';
+			trainingList = 'yes';
 		}
 		
 		// Handle mailing subscriptions and training signups
-		if (mailingList == 'yes') {
-			update('email-subscriptions/email-subscriptions.txt', email, true);
-		} 
-		else {
-			update('email-subscriptions/email-subscriptions.txt', email, false);
-		}
-		if (training == 'yes') {
-			update('training-signups/training-signups.txt', email, true);
-		} 
-		else {
-			update('training-signups/training-signups.txt', email, false);
-		}
+		update('email-subscriptions/email-subscriptions.txt', email, mailingList);
+		update('training-signups/training-signups.txt', email, trainingList);
 						
 		// Write guardian data to object
 		let obj =  {
@@ -632,7 +612,7 @@ function submitGuardianForm() {
 			legalGuardian: legalGuardian,
 			mailingList: mailingList,
 			childrenUnder6: childrenUnder6,
-			training: training,
+			trainingList: trainingList,
 			children: {}
 		};
 		
@@ -644,11 +624,6 @@ function submitGuardianForm() {
 			var allergies = document.getElementById('child' + num + '-allergies-container');
 			var allergyInputs = allergies.getElementsByTagName('input');
 			var childPath = 'child' + num;
-			
-			var output = '';
-			for (var k=0; k<inputs.length; k++) {
-				output += k + ': ' + inputs[k].value + '   |   ';
-			}
 			
 			obj.children[childPath] = {};
 			obj.children[childPath].firstName = inputs[0].value;
